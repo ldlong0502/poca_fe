@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uni_wave/blocs/home_cubit.dart';
-import 'package:uni_wave/configs/constants.dart';
-import 'package:uni_wave/features/home/appbar_item.dart';
-import 'package:uni_wave/features/home/home_slider_book.dart';
-import 'package:uni_wave/utils/resizable.dart';
+import 'package:poca/blocs/home_cubit.dart';
+import 'package:poca/configs/constants.dart';
+import 'package:poca/features/home/appbar_item.dart';
+import 'package:poca/features/home/home_slider_book.dart';
+import 'package:poca/utils/resizable.dart';
 
 import '../../providers/firebase_provider.dart';
 import '../../routes/app_routes.dart';

@@ -9,8 +9,8 @@ const Color darkPurpleColor = Color(0xff3f4f6e);
 const Color lightAccent = Color(0xff16a085);
 const Color secondBackground = Color(0xffF8F5F1);
 const Color authorColor = Color(0xff757575);
-const Color primaryColor = Color(0xfff7c8b6);
-const Color secondaryColor = Color(0xffCBE5AE);
+const Color primaryColor = Color(0xff655299);
+const Color secondaryColor = Color(0xffAA9ECD);
 BoxDecoration linearDecoration = const BoxDecoration(
   gradient: LinearGradient(
     begin: Alignment.topLeft,

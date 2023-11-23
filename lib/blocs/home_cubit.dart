@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uni_wave/configs/constants.dart';
-import 'package:uni_wave/models/audio_book.dart';
-import 'package:uni_wave/providers/firebase_provider.dart';
+import 'package:poca/configs/constants.dart';
+import 'package:poca/models/audio_book.dart';
+import 'package:poca/providers/firebase_provider.dart';
 
 import '../models/ebook.dart';
 

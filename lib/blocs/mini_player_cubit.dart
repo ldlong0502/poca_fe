@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:miniplayer/miniplayer.dart';
-import 'package:uni_wave/models/audio_book.dart';
-import 'package:uni_wave/models/duration_state.dart';
-import 'package:uni_wave/models/mp3.dart';
-import 'package:uni_wave/providers/preference_provider.dart';
-import 'package:uni_wave/services/sound_service.dart';
-import 'package:uni_wave/utils/resizable.dart';
+import 'package:poca/models/audio_book.dart';
+import 'package:poca/models/duration_state.dart';
+import 'package:poca/models/mp3.dart';
+import 'package:poca/providers/preference_provider.dart';
+import 'package:poca/services/sound_service.dart';
+import 'package:poca/utils/resizable.dart';
 
 class MiniPlayerCubit extends Cubit<int> {
   MiniPlayerCubit() : super(0);

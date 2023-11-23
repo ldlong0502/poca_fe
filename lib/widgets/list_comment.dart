@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uni_wave/features/comment/comment_detail.dart';
-import 'package:uni_wave/features/comment/empty_comment.dart';
-import 'package:uni_wave/features/comment/shimmer_loading_comment.dart';
+import 'package:poca/features/comment/comment_detail.dart';
+import 'package:poca/features/comment/empty_comment.dart';
+import 'package:poca/features/comment/shimmer_loading_comment.dart';
 
 import '../blocs/comment_cubit.dart';
 

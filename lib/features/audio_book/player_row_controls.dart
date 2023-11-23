@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:uni_wave/blocs/mini_player_cubit.dart';
-import 'package:uni_wave/configs/constants.dart';
-import 'package:uni_wave/utils/custom_toast.dart';
+import 'package:poca/blocs/mini_player_cubit.dart';
+import 'package:poca/configs/constants.dart';
+import 'package:poca/utils/custom_toast.dart';
 
 class PlayerRowControl extends StatelessWidget {
   const PlayerRowControl({super.key, required this.cubit});

@@ -1,4 +1,4 @@
-package com.example.uni_wave
+package com.example.poca
 
 import io.flutter.embedding.android.FlutterActivity
 

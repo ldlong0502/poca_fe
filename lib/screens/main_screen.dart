@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:uni_wave/blocs/app_cubit.dart';
-import 'package:uni_wave/blocs/mini_player_cubit.dart';
-import 'package:uni_wave/configs/app_configs.dart';
-import 'package:uni_wave/configs/constants.dart';
+import 'package:poca/blocs/app_cubit.dart';
+import 'package:poca/blocs/mini_player_cubit.dart';
+import 'package:poca/configs/app_configs.dart';
+import 'package:poca/configs/constants.dart';
 
 import '../utils/resizable.dart';
 import '../widgets/custom_mini_player.dart';
@@ -24,28 +24,39 @@ class MainScreen extends StatelessWidget {
     var child = [
       HomeScreen(isLogin: isLogin),
       LibraryScreen(isLogin: isLogin),
+      AccountScreen(isLogin: isLogin),
       AccountScreen(isLogin: isLogin)
     ];
 
     List<PersistentBottomNavBarItem> navBarsItems() {
       return [
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.home),
-          title: ("Trang chủ"),
+          icon:  Image.asset('assets/icons/ic_home_fill.png' , color: purpleColor,),
+          inactiveIcon:  Image.asset('assets/icons/ic_home.png' , color: purpleColor,),
+          title: ('Home'),
           activeColorPrimary: purpleColor,
-          inactiveColorPrimary: CupertinoColors.systemGrey,
+          inactiveColorPrimary: purpleColor,
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.book),
-          title: ("Thư viện"),
+          icon:  Image.asset('assets/icons/ic_structure_fill.png' , color: purpleColor,),
+          inactiveIcon:  Image.asset('assets/icons/ic_structure.png' , color: purpleColor,),
+          title: ("Categories"),
           activeColorPrimary: purpleColor,
-          inactiveColorPrimary: CupertinoColors.systemGrey,
+          inactiveColorPrimary: purpleColor,
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.account_circle),
-          title: ("Thư viện"),
+          icon:  Image.asset('assets/icons/ic_search_fill.png' , color: purpleColor,),
+          inactiveIcon:  Image.asset('assets/icons/ic_search.png' , color: purpleColor,),
+          title: ("Explore"),
           activeColorPrimary: purpleColor,
-          inactiveColorPrimary: CupertinoColors.systemGrey,
+          inactiveColorPrimary: purpleColor,
+        ),
+        PersistentBottomNavBarItem(
+          icon:  Image.asset('assets/icons/ic_setting_fill.png' , color: purpleColor,),
+          inactiveIcon:  Image.asset('assets/icons/ic_setting.png' , color: purpleColor,),
+          title: ("Settings"),
+          activeColorPrimary: purpleColor,
+          inactiveColorPrimary: purpleColor,
         ),
       ];
     }
@@ -69,7 +80,9 @@ class MainScreen extends StatelessWidget {
                   stateManagement: true,
                   hideNavigationBarWhenKeyboardShows: true,
                   decoration: NavBarDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(15)
+                    ),
                     colorBehindNavBar: Colors.white,
                     boxShadow: [
                       BoxShadow(
@@ -92,7 +105,7 @@ class MainScreen extends StatelessWidget {
                     duration: Duration(milliseconds: 200),
                   ),
                   navBarStyle: NavBarStyle
-                      .style1, // Choose the nav bar style with this property.
+                      .style9, // Choose the nav bar style with this property.
                 ),
                 const CustomMiniPlayer()
               ],

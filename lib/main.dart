@@ -2,10 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uni_wave/blocs/mini_player_cubit.dart';
-import 'package:uni_wave/configs/constants.dart';
-import 'package:uni_wave/routes/app_routes.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:poca/blocs/mini_player_cubit.dart';
+import 'package:poca/configs/constants.dart';
+import 'package:poca/routes/app_routes.dart';
 
+import 'features/blocs/user_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -23,9 +25,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => MiniPlayerCubit()),
+        BlocProvider(create: (context) => UserCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        builder: EasyLoading.init(),
         theme: ThemeData(
           textTheme: Theme
               .of(context)

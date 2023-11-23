@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:uni_wave/utils/resizable.dart';
+import 'package:poca/utils/resizable.dart';
 
 import '../configs/constants.dart';
 
@@ -27,7 +27,8 @@ class CustomToast {
             Center(
               child: Image.asset(
                 'assets/icons/ic_logo.png',
-                height: Resizable.size(context, 30),
+                height: Resizable.size(context, 30 ),
+                width: Resizable.size(context, 100 ),
               ),
             ),
             const SizedBox(width: 5,),

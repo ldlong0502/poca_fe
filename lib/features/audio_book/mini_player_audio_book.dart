@@ -6,10 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:marquee/marquee.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:uni_wave/blocs/mini_player_cubit.dart';
-import 'package:uni_wave/configs/constants.dart';
-import 'package:uni_wave/models/audio_book.dart';
-import 'package:uni_wave/utils/resizable.dart';
+import 'package:poca/blocs/mini_player_cubit.dart';
+import 'package:poca/configs/constants.dart';
+import 'package:poca/models/audio_book.dart';
+import 'package:poca/utils/resizable.dart';
 
 class MiniPlayerAudioBook extends StatelessWidget {
   const MiniPlayerAudioBook({super.key});

@@ -64,7 +64,7 @@ class PreferenceProvider {
     return value;
   }
 
-   Future<void> saveJsonToPrefs(
+  static Future<void> saveJsonToPrefs(
       Map<String, dynamic> json, String key) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -74,12 +74,12 @@ class PreferenceProvider {
       debugPrint(e.toString());
     }
   }
-   Future<void> removeJsonToPref(String key) async {
+  static Future<void> removeJsonToPref(String key) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.remove(key);
   }
 
-   Future<Map<String, dynamic>?> getJsonFromPrefs(String key) async {
+  static Future<Map<String, dynamic>?> getJsonFromPrefs(String key) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final jsonString = prefs.getString(key);

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:miniplayer/miniplayer.dart';
-import 'package:uni_wave/blocs/mini_player_cubit.dart';
-import 'package:uni_wave/configs/constants.dart';
-import 'package:uni_wave/features/audio_book/max_player_audio_book.dart';
+import 'package:poca/blocs/mini_player_cubit.dart';
+import 'package:poca/configs/constants.dart';
+import 'package:poca/features/audio_book/max_player_audio_book.dart';
 
 import '../features/audio_book/mini_player_audio_book.dart';
 import '../utils/resizable.dart';

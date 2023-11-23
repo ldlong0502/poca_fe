@@ -3,11 +3,11 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:uni_wave/blocs/home_cubit.dart';
-import 'package:uni_wave/configs/constants.dart';
-import 'package:uni_wave/routes/app_routes.dart';
-import 'package:uni_wave/screens/audio_book_detail_screen.dart';
-import 'package:uni_wave/utils/resizable.dart';
+import 'package:poca/blocs/home_cubit.dart';
+import 'package:poca/configs/constants.dart';
+import 'package:poca/routes/app_routes.dart';
+import 'package:poca/screens/audio_book_detail_screen.dart';
+import 'package:poca/utils/resizable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../utils/navigator_custom.dart';

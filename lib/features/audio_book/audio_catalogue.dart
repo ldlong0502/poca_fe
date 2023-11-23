@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uni_wave/configs/constants.dart';
-import 'package:uni_wave/models/audio_book.dart';
-import 'package:uni_wave/models/mp3.dart';
-import 'package:uni_wave/utils/resizable.dart';
+import 'package:poca/configs/constants.dart';
+import 'package:poca/models/audio_book.dart';
+import 'package:poca/models/mp3.dart';
+import 'package:poca/utils/resizable.dart';
 
 import '../../blocs/hide_item_cubit.dart';
 
