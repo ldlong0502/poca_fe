@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:poca/providers/preference_provider.dart';
 
 class DioInterceptor extends Interceptor {
@@ -10,6 +11,7 @@ class DioInterceptor extends Interceptor {
     final token = await PreferenceProvider.getString('access_token');
     if (token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
+      debugPrint('$token');
     }
     options.headers['Content-Type']= 'application/json';
     super.onRequest(options, handler);
@@ -18,6 +20,7 @@ class DioInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 403 ||
         err.response?.statusCode == 401) {
+      debugPrint('111111');
       await refreshToken();
       handler.resolve(await _retry(err.requestOptions));
     }
@@ -38,7 +41,8 @@ class DioInterceptor extends Interceptor {
 
   Future<bool> refreshToken() async {
     final refreshToken = await PreferenceProvider.getString('refresh_token');
-    final response = await dio.post('/auth/refresh', data: {'refreshToken': refreshToken});
+    debugPrint('alllll');
+    final response = await dio.post('/auth/refresh-token', data: {'refreshToken': refreshToken});
 
     if (response.statusCode == 201) {
       await PreferenceProvider.setString('access_token' , response.data['accessToken']);

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:poca/screens/account_screen.dart';
 import 'package:poca/screens/home_screen.dart';
-import 'package:poca/screens/library_screen.dart';
+import 'package:poca/screens/topic_screen.dart';
 
 class AppCubit extends Cubit<int> {
   AppCubit() : super(0);
@@ -18,7 +18,7 @@ class AppCubit extends Cubit<int> {
   Widget getScreenNow(int index , bool isLogin) {
     switch(index) {
       case 0: return HomeScreen(isLogin: isLogin);
-      case 1: return LibraryScreen(isLogin: isLogin);
+      case 1: return TopicScreen(isLogin: isLogin);
       case 2: return AccountScreen(isLogin: isLogin);
       default: return HomeScreen(isLogin: isLogin);
     }

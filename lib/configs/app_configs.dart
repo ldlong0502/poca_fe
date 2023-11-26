@@ -3,6 +3,6 @@ import 'package:flutter/cupertino.dart';
 class AppConfigs {
   static BuildContext? contextApp;
 
-  static const endPoint = 'http://192.168.1.6:5000/api';
+  static const endPoint = 'http://10.0.2.2:5000/api';
 
 }

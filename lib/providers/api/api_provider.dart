@@ -19,6 +19,7 @@ class ApiProvider {
     try {
       return await _dio.get(path, queryParameters: queryParameters);
     } catch (error) {
+      debugPrint('error $error');
      return null;
     }
   }

@@ -15,6 +15,8 @@ class AppRoutes {
   static const audioBookDetail = '/audioBookDetail';
   static const onBoarding = '/onBoarding';
   static const login = '/login';
+  static const topicDetail = '/topicDetail';
+  static const podcastDetail = '/podcastDetail';
 
   static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {

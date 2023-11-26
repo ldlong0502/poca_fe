@@ -11,6 +11,7 @@ const Color secondBackground = Color(0xffF8F5F1);
 const Color authorColor = Color(0xff757575);
 const Color primaryColor = Color(0xff655299);
 const Color secondaryColor = Color(0xffAA9ECD);
+const Color textColor = Color(0xff242327);
 BoxDecoration linearDecoration = const BoxDecoration(
   gradient: LinearGradient(
     begin: Alignment.topLeft,

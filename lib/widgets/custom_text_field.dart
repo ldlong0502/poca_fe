@@ -10,14 +10,23 @@ class CustomTextField extends StatelessWidget {
       {super.key,
       required this.controller,
       required this.title,
+      this.focusNode,
       required this.onValidate,
+      this.prefixIcon,
+        this.onChanged,
+      this.fontSize = 20,
+        this.isMaxSize = false,
       required this.isPassword});
 
   final TextEditingController controller;
+  final FocusNode? focusNode;
   final String title;
   final Function onValidate;
+  final Function? onChanged;
   final bool isPassword;
-
+  final Widget? prefixIcon;
+  final double fontSize;
+  final bool isMaxSize;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -30,39 +39,43 @@ class CustomTextField extends StatelessWidget {
               controller: controller,
               obscureText: isPassword ? !state : false,
               validator: (value) {
-               return    onValidate(value);
+                return onValidate(value);
               },
+              onChanged: onChanged == null ? null : (value) {
+                onChanged!(value);
+              },
+              focusNode: focusNode,
               style: TextStyle(
-                  fontSize: Resizable.font(context, 20),
+                  fontSize: Resizable.font(context, fontSize),
                   color: Colors.black,
                   fontWeight: FontWeight.w600),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10)
-                ),
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(10)),
+                prefixIcon: prefixIcon,
                 fillColor: secondaryColor.withOpacity(0.25),
                 filled: true,
                 hintText: title,
                 hintStyle: TextStyle(
                     fontWeight: FontWeight.w400,
-                    fontSize: Resizable.font(context, 20),
+                    fontSize: Resizable.font(context, fontSize),
                     color: secondaryColor),
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: Resizable.padding(context, 20),
                   vertical: Resizable.padding(context, 20),
                 ),
                 constraints: BoxConstraints(
-                  maxWidth: Resizable.width(context) * 0.8,
+                  maxWidth: isMaxSize ? double.infinity : Resizable.width(context) * 0.8 ,
                 ),
                 suffixIcon: IconButton(
                   onPressed: cubit.update,
                   icon: isPassword
                       ? Icon(
-                      !state
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                      color: secondaryColor)
+                          !state
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          color: secondaryColor)
                       : Container(),
                 ),
               ));

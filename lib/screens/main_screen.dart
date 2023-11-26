@@ -7,12 +7,13 @@ import 'package:poca/blocs/app_cubit.dart';
 import 'package:poca/blocs/mini_player_cubit.dart';
 import 'package:poca/configs/app_configs.dart';
 import 'package:poca/configs/constants.dart';
+import 'package:poca/screens/explore_screen.dart';
 
 import '../utils/resizable.dart';
 import '../widgets/custom_mini_player.dart';
 import 'account_screen.dart';
 import 'home_screen.dart';
-import 'library_screen.dart';
+import 'topic_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key, required this.isLogin});
@@ -23,8 +24,8 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var child = [
       HomeScreen(isLogin: isLogin),
-      LibraryScreen(isLogin: isLogin),
-      AccountScreen(isLogin: isLogin),
+      TopicScreen(isLogin: isLogin),
+      const ExploreScreen(),
       AccountScreen(isLogin: isLogin)
     ];
 
@@ -40,7 +41,7 @@ class MainScreen extends StatelessWidget {
         PersistentBottomNavBarItem(
           icon:  Image.asset('assets/icons/ic_structure_fill.png' , color: purpleColor,),
           inactiveIcon:  Image.asset('assets/icons/ic_structure.png' , color: purpleColor,),
-          title: ("Categories"),
+          title: ("Topics"),
           activeColorPrimary: purpleColor,
           inactiveColorPrimary: purpleColor,
         ),

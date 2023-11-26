@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,15 +19,23 @@ class HeaderCustom extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text('Good morning!', style: TextStyle(
+         title.isEmpty ? InkWell(
+           onTap: () {
+             Navigator.pop(context);
+           },
+           child: Icon(
+             Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
+             color: textColor,
+           ),
+         ) : Text(title, style: TextStyle(
             fontSize: Resizable.font(context, 30),
-            color: primaryColor,
+            color: textColor,
             fontWeight: FontWeight.bold
           ),),
           const Spacer(),
            Stack(
             children: [
-              Icon(Icons.notifications_none_outlined, color: primaryColor, size: 40,),
+              const Icon(Icons.notifications_none_outlined, color: primaryColor, size: 40,),
               Positioned(
                 top: 6,
                   right: 5,
