@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:lifecycle/lifecycle.dart';
 import 'package:poca/blocs/mini_player_cubit.dart';
+import 'package:poca/configs/app_configs.dart';
 import 'package:poca/configs/constants.dart';
+import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/routes/app_routes.dart';
 
 import 'features/blocs/user_cubit.dart';
@@ -22,12 +25,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppConfigs.contextApp = context;
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MiniPlayerCubit()),
+        BlocProvider(create: (context) => PlayerCubit(context)),
         BlocProvider(create: (context) => UserCubit()),
       ],
       child: MaterialApp(
+        navigatorObservers: [defaultLifecycleObserver],
         debugShowCheckedModeBanner: false,
         builder: EasyLoading.init(),
         theme: ThemeData(

@@ -11,14 +11,16 @@ import 'package:poca/configs/constants.dart';
 import 'package:poca/models/audio_book.dart';
 import 'package:poca/utils/resizable.dart';
 
-class MiniPlayerView extends StatelessWidget {
-  const MiniPlayerView({super.key});
+import '../blocs/player_cubit.dart';
+
+class MinPlayerPodcast extends StatelessWidget {
+  const MinPlayerPodcast({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MiniPlayerCubit, int>(
+    return BlocBuilder<PlayerCubit, int>(
       builder: (context, state) {
-        final cubit = context.read<MiniPlayerCubit>();
+        final cubit = context.read<PlayerCubit>();
         return Stack(
           children: [
             Row(
@@ -33,7 +35,7 @@ class MiniPlayerView extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: CachedNetworkImage(
-                          imageUrl: cubit.currentAudioBook!.image,
+                          imageUrl: cubit.currentPodcast!.imageUrl,
                           fit: BoxFit.fill,
                           width: double.infinity,
                           placeholder: (context, s) {
@@ -62,10 +64,10 @@ class MiniPlayerView extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Marquee(
-                            text: cubit.currentAudioBook!.title,
+                            text: cubit.currentPodcast!.title,
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
-                              color: purpleColor,
+                              color: textColor,
                               fontSize: Resizable.font(context, 14),
                             ),
                             scrollAxis: Axis.horizontal,
@@ -85,12 +87,12 @@ class MiniPlayerView extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             child: AutoSizeText(
-                              cubit.currentAudioBook!.listMp3[cubit.indexChapter]
+                              cubit.currentPodcast!.episodesList[cubit.indexChapter]
                                   .title,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                color: pinkColor,
+                                color: secondaryColor,
                                 fontSize: Resizable.font(context, 12),
                               ),),
                           ),
@@ -125,7 +127,7 @@ class MiniPlayerView extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Center(child: Icon(cubit.isPlay &&
-                                  cubit.status == ProcessingState.ready ? Icons
+                                  (cubit.status == ProcessingState.ready || cubit.status == ProcessingState.buffering) ? Icons
                                   .pause_rounded : Icons.play_arrow_rounded,
                                   size: Resizable.size(context, 25)),),
                             ),

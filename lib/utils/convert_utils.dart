@@ -67,4 +67,9 @@ class ConvertUtils {
         return '';
     }
   }
+
+
+  static String convertDob(DateTime dateTime) {
+    return DateFormat('yyyy-dd-MM').format(dateTime);
+  }
 }

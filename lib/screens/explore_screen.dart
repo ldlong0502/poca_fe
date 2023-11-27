@@ -99,14 +99,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  shrinkWrap: true,
-                  children: [
-                    ...cubit.listPodcast.map((e) {
-                      return ItemSearch(isHistory: !cubit.isSearching, podcast: e);
-                    }).toList()
-                  ],
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    shrinkWrap: true,
+                    children: [
+                      ...cubit.listPodcast.map((e) {
+                        return ItemSearch(isHistory: !cubit.isSearching, podcast: e);
+                      }).toList(),
+                      const SizedBox(height: 200,)
+                    ],
+                  ),
                 )
               ],
             ),

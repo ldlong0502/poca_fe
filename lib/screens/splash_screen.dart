@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/features/blocs/user_cubit.dart';
 import 'package:poca/models/user_model.dart';
 import 'package:poca/providers/preference_provider.dart';
@@ -34,8 +35,12 @@ class SplashScreen extends StatelessWidget {
             AppRoutes.onBoarding, (route) => false);
       }
     } else {
+      if(context.mounted) {
+        context.read<PlayerCubit>().dismissMiniPlayer();
+      }
       if(user == null) {
         if (context.mounted) {
+          context.read<UserCubit>().update(null);
           Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
               AppRoutes.main, (route) => false,
               arguments: {'isLogin': false});

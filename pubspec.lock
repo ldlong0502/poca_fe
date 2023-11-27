@@ -352,6 +352,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutterlifecyclehooks:
+    dependency: "direct main"
+    description:
+      name: flutterlifecyclehooks
+      sha256: "25c16ff88513445c049735013ed66ddd364530c9467b5784a5667ee0e644dd67"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -416,6 +424,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.8"
+  lifecycle:
+    dependency: "direct main"
+    description:
+      name: lifecycle
+      sha256: ad96a411440e8ab5b8dd63eb6345b1385863f33a09ae073e0ea110159ea81787
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
   lints:
     dependency: transitive
     description:

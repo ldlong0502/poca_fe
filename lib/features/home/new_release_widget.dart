@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/configs/constants.dart';
 import 'package:poca/features/blocs/home_cubit.dart';
+import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/utils/convert_utils.dart';
 import 'package:poca/utils/resizable.dart';
 
@@ -99,6 +101,7 @@ class NewReleaseWidget extends StatelessWidget {
                             vertical: Resizable.padding(context, 10)
                           ),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 episode.title,
@@ -153,7 +156,10 @@ class NewReleaseWidget extends StatelessWidget {
                                     child: Icon(Icons.add_circle_outline , color: Colors.white, size: Resizable.size(context, 35),),
                                   ),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      var index = podcast.episodesList.indexWhere((element) => element.id == episode.id);
+                                      context.read<PlayerCubit>().listen(podcast, index);
+                                    },
                                     child: Icon(Icons.play_circle_outline_rounded , color: Colors.white, size: Resizable.size(context, 35),),
                                   ),
 

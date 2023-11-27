@@ -33,34 +33,40 @@ class HeaderCustom extends StatelessWidget {
             fontWeight: FontWeight.bold
           ),),
           const Spacer(),
-           Stack(
-            children: [
-              const Icon(Icons.notifications_none_outlined, color: primaryColor, size: 40,),
-              Positioned(
-                top: 6,
-                  right: 5,
-                  child:  Container(
-                    padding: const EdgeInsets.all(2),
-                      decoration: const BoxDecoration(color: Colors.white , shape: BoxShape.circle),
-                      child: const Badge(smallSize: 10,)))
-            ],
-          ),
-          const SizedBox(width: 5,),
+
+
           BlocBuilder<UserCubit, UserModel?>(
             builder: (context, user) {
               if(user == null) return Container();
-              return Container(
-                height: Resizable.size(context, 40),
-                width: Resizable.size(context, 40),
+              return Row(
+                children: [
+                  Stack(
+                    children: [
+                      const Icon(Icons.notifications_none_outlined, color: primaryColor, size: 40,),
+                      Positioned(
+                          top: 6,
+                          right: 5,
+                          child:  Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: const BoxDecoration(color: Colors.white , shape: BoxShape.circle),
+                              child: const Badge(smallSize: 10,)))
+                    ],
+                  ),
+                  const SizedBox(width: 5,),
+                  Container(
+                    height: Resizable.size(context, 40),
+                    width: Resizable.size(context, 40),
 
-                decoration: BoxDecoration(
-                    color: secondaryColor,
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: NetworkImage(user!.imageUrl),
-                    fit: BoxFit.cover
-                  )
-                ),
+                    decoration: BoxDecoration(
+                        color: secondaryColor,
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(user!.imageUrl),
+                        fit: BoxFit.cover
+                      )
+                    ),
+                  ),
+                ],
               );
             }
           )

@@ -29,6 +29,7 @@ class ApiProvider {
       debugPrint(data.toString());
       return await _dio.post(path, data: data);
     } catch (error) {
+      debugPrint(error.toString());
       return null;
     }
   }

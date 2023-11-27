@@ -1,32 +1,52 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lifecycle/lifecycle.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:poca/blocs/app_cubit.dart';
 import 'package:poca/blocs/mini_player_cubit.dart';
 import 'package:poca/configs/app_configs.dart';
 import 'package:poca/configs/constants.dart';
+import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/screens/explore_screen.dart';
-
+import 'package:lifecycle/lifecycle.dart';
 import '../utils/resizable.dart';
 import '../widgets/custom_mini_player.dart';
 import 'account_screen.dart';
 import 'home_screen.dart';
 import 'topic_screen.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key, required this.isLogin});
 
   final bool isLogin;
 
   @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> with  LifecycleAware, LifecycleMixin {
+  @override
+  void onLifecycleEvent(LifecycleEvent event) async {
+    if(event == LifecycleEvent.push || event == LifecycleEvent.visible || event == LifecycleEvent.active) {
+      debugPrint('actice');
+    }
+    else {
+      if(context.mounted){
+        context.read<PlayerCubit>().pause();
+      }
+    }
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     var child = [
-      HomeScreen(isLogin: isLogin),
-      TopicScreen(isLogin: isLogin),
+      HomeScreen(isLogin: widget.isLogin),
+      TopicScreen(isLogin: widget.isLogin),
       const ExploreScreen(),
-      AccountScreen(isLogin: isLogin)
+      AccountScreen(isLogin: widget.isLogin)
     ];
 
     List<PersistentBottomNavBarItem> navBarsItems() {
@@ -62,9 +82,9 @@ class MainScreen extends StatelessWidget {
       ];
     }
     return Scaffold(
-      body: BlocBuilder<MiniPlayerCubit, int>(
+      body: BlocBuilder<PlayerCubit, int>(
         builder: (context, state) {
-          final cubit = context.read<MiniPlayerCubit>();
+          final cubit = context.read<PlayerCubit>();
 
           return Scaffold(
             body: Stack(

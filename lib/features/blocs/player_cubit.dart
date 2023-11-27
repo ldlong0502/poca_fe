@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:poca/models/audio_book.dart';
@@ -9,10 +10,11 @@ import 'package:poca/models/mp3.dart';
 import 'package:poca/models/podcast.dart';
 import 'package:poca/providers/preference_provider.dart';
 import 'package:poca/services/sound_service.dart';
+import 'package:poca/utils/custom_toast.dart';
 
 class PlayerCubit extends Cubit<int> {
-  PlayerCubit() : super(0);
-
+  PlayerCubit(this.context) : super(0);
+  final BuildContext context;
   bool isMiniPlayer = true;
   double speed = 1;
   final MiniplayerController controller = MiniplayerController();
@@ -60,6 +62,14 @@ class PlayerCubit extends Cubit<int> {
   }
 
   listen(Podcast podcast  , [int value = 0]) async {
+    if(podcast.episodesList.isEmpty) {
+      Fluttertoast.showToast(msg: 'Sorry! None of Episodes');
+      return;
+    }
+    if(currentPodcast!= null && podcast.id == currentPodcast!.id &&  value == indexChapter) {
+      Fluttertoast.showToast(msg: 'You are listening this episodes');
+      return;
+    }
     var temp = await PreferenceProvider.getString('audio_speed');
     if(temp.isNotEmpty) {
       speed = double.parse(temp);

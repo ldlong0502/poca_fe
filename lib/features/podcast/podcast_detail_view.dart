@@ -1,6 +1,8 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/configs/constants.dart';
+import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/features/podcast/row_info_podcast.dart';
 import 'package:poca/models/podcast.dart';
 import 'package:poca/screens/base_screen.dart';
@@ -64,7 +66,13 @@ class PodcastDetailView extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  Expanded(child: Container()),
+                  Expanded(child: IconButton(
+                    onPressed: (){
+                        context.read<PlayerCubit>().listen(podcast);
+                    },
+                    iconSize: Resizable.size(context, 50),
+                    icon: const Icon(Icons.play_circle_outline , color: primaryColor,),
+                  )),
                 ],
               ),
             ),
@@ -95,81 +103,87 @@ class PodcastDetailView extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 ...podcast.episodesList
-                    .map((e) => Container(
-                          margin: const EdgeInsets.only(bottom: 10),
-                          child: Row(
-                            children: [
-                              NetworkImageCustom(
-                                url: e.imageUrl,
-                                height: Resizable.size(context, 85),
-                                width: Resizable.size(context, 85),
-                                radius: 10,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    e.title,
-                                    style: TextStyle(
-                                        fontSize: Resizable.font(context, 16),
-                                        color: textColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${ConvertUtils.convertIntToDateString(e.publishDate * 1000)} - ${ConvertUtils.convertIntToDuration(e.duration)}',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize:
-                                                Resizable.font(context, 13),
-                                            color: primaryColor,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            e.favoritesList.length.toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    Resizable.font(context, 13),
-                                                color: primaryColor,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          const Icon(
-                                            Icons.favorite,
-                                            color: primaryColor,
-                                          )
-                                        ],
-                                      ),
-                                      InkWell(
-                                        onTap: (){},
-                                          child: const Icon(
-                                        Icons.more_horiz_rounded,
-                                        color: primaryColor,
-                                      ))
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                ],
-                              ))
-                            ],
+                    .map((e) => InkWell(
+
+                    onTap: () {
+                      context.read<PlayerCubit>().listen(podcast, podcast.episodesList.indexOf(e));
+                    },
+                      child: Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              children: [
+                                NetworkImageCustom(
+                                  url: e.imageUrl,
+                                  height: Resizable.size(context, 85),
+                                  width: Resizable.size(context, 85),
+                                  radius: 10,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      e.title,
+                                      style: TextStyle(
+                                          fontSize: Resizable.font(context, 16),
+                                          color: textColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${ConvertUtils.convertIntToDateString(e.publishDate * 1000)} - ${ConvertUtils.convertIntToDuration(e.duration)}',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize:
+                                                  Resizable.font(context, 13),
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              e.favoritesList.length.toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      Resizable.font(context, 13),
+                                                  color: primaryColor,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const Icon(
+                                              Icons.favorite,
+                                              color: primaryColor,
+                                            )
+                                          ],
+                                        ),
+                                        InkWell(
+                                          onTap: (){},
+                                            child: const Icon(
+                                          Icons.more_horiz_rounded,
+                                          color: primaryColor,
+                                        ))
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ))
+                              ],
+                            ),
                           ),
-                        ))
+                    ))
                     .toList()
               ],
             ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:poca/features/blocs/login_cubit.dart';
-import 'package:poca/providers/api/api_login.dart';
+import 'package:poca/providers/api/api_auth.dart';
 import 'package:poca/utils/custom_toast.dart';
 import 'package:poca/widgets/custom_text_field.dart';
 
@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                           _formKey.currentState!.save();
                           cubit.update(LoginStatus.loading);
-                          var res = await ApiLogin.instance.login(
+                          var res = await ApiAuthentication.instance.login(
                               userNameController.text, passWordController.text);
                           if (res) {
                             cubit.update(LoginStatus.success);
@@ -157,7 +157,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontWeight: FontWeight.w500),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true).popAndPushNamed(AppRoutes.signUp);
+                          },
                           child: Text(
                             'Sign Up',
                             style: TextStyle(

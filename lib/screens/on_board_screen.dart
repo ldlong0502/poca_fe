@@ -8,10 +8,10 @@ import 'package:poca/widgets/custom_button.dart';
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
 
-
   updateOnBoarding() async {
     await PreferenceProvider.setString('on_boarding', 'true');
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +41,9 @@ class OnBoardingScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 10,),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Image.asset(
                       'assets/icons/ic_bg.png',
                       height: Resizable.size(context, 150),
@@ -49,8 +51,8 @@ class OnBoardingScreen extends StatelessWidget {
                     Image.asset('assets/icons/ic_logo.png',
                         height: Resizable.size(context, 100)),
                     Padding(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 20),
                       child: Text(
                         'A digital audio file made available on the internet for downloading to a mobile device, typically available as a series, new installments of which can be received by subscribers automatically.',
                         textAlign: TextAlign.center,
@@ -62,28 +64,45 @@ class OnBoardingScreen extends StatelessWidget {
                     ),
                     CustomButton(
                         title: 'Sign Up',
-                        onTap: () {
-                          updateOnBoarding();
+                        onTap: () async {
+                          await updateOnBoarding();
+                          if (context.mounted) {
+                            Navigator.pushNamed(context, AppRoutes.signUp);
+                          }
                         },
                         backgroundColor: secondaryColor,
                         textColor: Colors.white),
-                    const SizedBox(height: 10,),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     CustomButton(
                         title: 'Sign In',
-                        onTap: () {
-                          updateOnBoarding();
-                          Navigator.pushNamed(context, AppRoutes.login);
+                        onTap: () async {
+                          await updateOnBoarding();
+                          if (context.mounted) {
+                            Navigator.pushNamed(context, AppRoutes.login);
+                          }
                         },
                         backgroundColor: primaryColor,
                         textColor: Colors.white),
-                    const SizedBox(height: 5,),
-                    TextButton(onPressed: () {
-                      updateOnBoarding();
-                    }, child: Text('Skip' , style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Resizable.font(context, 22),
-                      fontWeight: FontWeight.w600
-                    ),) ,)
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        await updateOnBoarding();
+                        if (context.mounted) {
+                          Navigator.popAndPushNamed(context, AppRoutes.splash);
+                        }
+                      },
+                      child: Text(
+                        'Skip',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: Resizable.font(context, 22),
+                            fontWeight: FontWeight.w600),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -93,5 +112,4 @@ class OnBoardingScreen extends StatelessWidget {
       ),
     );
   }
-
 }

@@ -21,8 +21,10 @@ class DioInterceptor extends Interceptor {
     if (err.response?.statusCode == 403 ||
         err.response?.statusCode == 401) {
       debugPrint('111111');
-      await refreshToken();
-      handler.resolve(await _retry(err.requestOptions));
+      var res = await refreshToken();
+      if(res) {
+        handler.resolve(await _retry(err.requestOptions));
+      }
     }
 
     super.onError(err, handler);
@@ -41,6 +43,7 @@ class DioInterceptor extends Interceptor {
 
   Future<bool> refreshToken() async {
     final refreshToken = await PreferenceProvider.getString('refresh_token');
+    if(refreshToken.isEmpty) return false;
     debugPrint('alllll');
     final response = await dio.post('/auth/refresh-token', data: {'refreshToken': refreshToken});
 

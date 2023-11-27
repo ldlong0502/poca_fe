@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
   final double height, fontSize, width;
   final FontWeight fontWeight;
   final bool border;
-
+  final double radius;
   const CustomButton(
       {super.key,
       required this.title,
@@ -20,6 +20,7 @@ class CustomButton extends StatelessWidget {
       required this.textColor,
       this.height = 45,
       this.width = 200,
+      this.radius = 15,
       this.fontSize = 20,
       this.fontWeight = FontWeight.w500,
       this.border = false});
@@ -50,7 +51,7 @@ class CustomButton extends StatelessWidget {
             )),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)))),
+                    borderRadius: BorderRadius.circular(radius)))),
         child: Text(title,
             maxLines: 1,
             style: TextStyle(

@@ -5,16 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:poca/blocs/mini_player_cubit.dart';
 import 'package:poca/configs/constants.dart';
+import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/utils/custom_toast.dart';
 
 class PlayerRowControl extends StatelessWidget {
   const PlayerRowControl({super.key, required this.cubit});
 
-  final MiniPlayerCubit cubit;
+  final PlayerCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MiniPlayerCubit, int>(
+    return BlocBuilder<PlayerCubit, int>(
       bloc: cubit,
       builder: (context, state) {
         return Container(
@@ -34,7 +35,7 @@ class PlayerRowControl extends StatelessWidget {
                   },
                   icon: const Icon(
                     Icons.skip_previous_rounded,
-                    color: Colors.white,
+                    color: primaryColor,
                     size: 30,
                   )),
               IconButton(
@@ -42,13 +43,13 @@ class PlayerRowControl extends StatelessWidget {
                     cubit.seekPrevious(const Duration(seconds: 30));
                   },
                   icon: Image.asset('assets/icons/ic_replay30.png',
-                      color: Colors.white, height: 30)),
+                      color: primaryColor, height: 30)),
               CircleAvatar(
                 radius: 45,
-                backgroundColor: Colors.white.withOpacity(0.2),
+                backgroundColor: primaryColor.withOpacity(0.2),
                 child: CircleAvatar(
                     radius: 30,
-                    backgroundColor: Colors.white,
+                    backgroundColor: primaryColor,
                     child: IconButton(
                         onPressed: () {
                           if (cubit.isPlay && cubit.status == ProcessingState
@@ -63,15 +64,15 @@ class PlayerRowControl extends StatelessWidget {
                           height: 20,
                           width: 20,
                           child: CircularProgressIndicator(
-                            color: purpleColor,
+                            color: Colors.white,
                             strokeWidth: 2,
 
                           ),
-                        ) : Icon(
+                        ) :Icon(
                           cubit.isPlay &&
-                              cubit.status == ProcessingState.ready ? Icons
+                              (cubit.status == ProcessingState.ready || cubit.status == ProcessingState.buffering) ? Icons
                               .pause_rounded : Icons.play_arrow_rounded,
-                          color: purpleColor,
+                          color: Colors.white,
                           size: 20,
                         ))),
               ),
@@ -80,11 +81,11 @@ class PlayerRowControl extends StatelessWidget {
                     cubit.seekNext(const Duration(seconds: 30));
                   },
                   icon: Image.asset('assets/icons/ic_next30.png',
-                      color: Colors.white, height: 30)),
+                      color: primaryColor, height: 30)),
               IconButton(
                   onPressed: () {
-                   if(cubit.indexChapter + 1 > cubit.currentAudioBook!.listMp3.length - 1) {
-                     CustomToast.showBottomToast(context, 'Bạn đang nghe chương cuối!');
+                   if(cubit.indexChapter + 1 > cubit.currentPodcast!.episodesList.length - 1) {
+                     CustomToast.showBottomToast(context, 'You are listening final episodes');
                    }
                    else {
                      cubit.changeChapter(cubit.indexChapter + 1);
@@ -92,7 +93,7 @@ class PlayerRowControl extends StatelessWidget {
                   },
                   icon: const Icon(
                     Icons.skip_next_rounded,
-                    color: Colors.white,
+                    color: primaryColor,
                     size: 30,
                   )),
             ],
