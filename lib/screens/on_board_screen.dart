@@ -9,7 +9,7 @@ class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
 
   updateOnBoarding() async {
-    await PreferenceProvider.setString('on_boarding', 'true');
+    await PreferenceProvider.instance.setString('on_boarding', 'true');
   }
 
   @override

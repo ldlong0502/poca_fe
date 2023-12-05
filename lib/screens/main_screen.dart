@@ -42,6 +42,7 @@ class _MainScreenState extends State<MainScreen> with  LifecycleAware, Lifecycle
 
   @override
   Widget build(BuildContext context) {
+    AppConfigs.contextApp = context;
     var child = [
       HomeScreen(isLogin: widget.isLogin),
       TopicScreen(isLogin: widget.isLogin),

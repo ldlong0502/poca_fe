@@ -23,7 +23,7 @@ class ExploreCubit extends Cubit<int> {
   }
 
   Future<List<Podcast>> getHistorySearch() async {
-    var json = await PreferenceProvider.getJsonFromPrefs('history_search');
+    var json = await PreferenceProvider.instance.getJsonFromPrefs('history_search');
     if(json == null) return [];
     List<Podcast> podcasts =
     (json as List).map((e) => Podcast.fromJson(e)).toList();

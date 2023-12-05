@@ -5,4 +5,6 @@ class AppConfigs {
 
   static const endPoint = 'http://10.0.2.2:5000/api';
 
+
+  static const KEY_RECENTLY_PLAYED = 'recently_played';
 }

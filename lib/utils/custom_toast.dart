@@ -6,19 +6,19 @@ import 'package:poca/utils/resizable.dart';
 import '../configs/constants.dart';
 
 class CustomToast {
-  static void showBottomToast(BuildContext context, String text) {
+  static void showBottomToast(BuildContext context, String text , [ToastGravity gravity = ToastGravity.BOTTOM]) {
     final fToast = FToast()..init(context);
     Widget toast = Card(
       elevation: 10,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25.0),
+        borderRadius: BorderRadius.circular(1000),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(
             horizontal: Resizable.size(context, 20),
-            vertical: Resizable.size(context, 5)),
+            vertical: Resizable.size(context, 10)),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(1000.0),
           color: whiteColor,
         ),
         child: Row(
@@ -26,8 +26,8 @@ class CustomToast {
           children: [
             Center(
               child: Image.asset(
-                'assets/icons/ic_logo.png',
-                height: Resizable.size(context, 30 ),
+                'assets/icons/ic_logo_small.png',
+                height: Resizable.size(context, 35 ),
                 width: Resizable.size(context, 100 ),
               ),
             ),
@@ -49,8 +49,8 @@ class CustomToast {
 
     fToast.showToast(
       child: toast,
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: const Duration(seconds: 1),
+      gravity: gravity,
+      toastDuration: const Duration(seconds: 2),
     );
   }
 }

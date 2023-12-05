@@ -4,12 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:poca/configs/app_configs.dart';
+import 'package:poca/features/blocs/recently_play_cubit.dart';
 import 'package:poca/models/audio_book.dart';
 import 'package:poca/models/duration_state.dart';
 import 'package:poca/models/mp3.dart';
 import 'package:poca/models/podcast.dart';
 import 'package:poca/providers/api/api_espisode.dart';
 import 'package:poca/providers/preference_provider.dart';
+import 'package:poca/services/history_services.dart';
 import 'package:poca/services/sound_service.dart';
 import 'package:poca/utils/custom_toast.dart';
 
@@ -38,7 +41,7 @@ class PlayerCubit extends Cubit<int> {
     isLoading = false;
     indexChapter = 0;
     currentPodcast = null;
-    DurationState durationState = const DurationState(
+    durationState = const DurationState(
         progress: Duration.zero, buffered: Duration.zero, total: Duration.zero);
   }
 
@@ -71,10 +74,11 @@ class PlayerCubit extends Cubit<int> {
       Fluttertoast.showToast(msg: 'You are listening this episodes');
       return;
     }
-    var temp = await PreferenceProvider.getString('audio_speed');
+    var temp = await PreferenceProvider.instance.getString('audio_speed');
     if(temp.isNotEmpty) {
       speed = double.parse(temp);
     }
+    updateHistory();
     isFirstOpenMax = true;
     isLoading = true;
     emitState();
@@ -117,12 +121,18 @@ class PlayerCubit extends Cubit<int> {
     soundService.pause();
   }
   dismissMiniPlayer() async {
+    updateHistory();
     init();
     await soundService.stop();
     soundService.dispose();
     emitState();
   }
-
+  updateHistory() async {
+    if(currentPodcast != null) {
+      await HistoryService.instance.updateNewHistory(currentPodcast!, indexChapter, durationState.progress.inMilliseconds);
+      AppConfigs.contextApp!.read<RecentlyPlayCubit>().load();
+    }
+  }
   onSeek(Duration duration) async {
     await soundService.seek(duration);
   }
@@ -141,7 +151,7 @@ class PlayerCubit extends Cubit<int> {
   }
 
   void setSpeed (double value) async {
-    await PreferenceProvider.setString('audio_speed', value.toString());
+    await PreferenceProvider.instance.setString('audio_speed', value.toString());
 
     speed = value;
     emitState();

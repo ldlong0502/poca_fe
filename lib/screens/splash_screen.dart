@@ -27,8 +27,8 @@ class SplashScreen extends StatelessWidget {
 
   void applicationInit(BuildContext context) async {
     await Future.delayed(const Duration(milliseconds: 500));
-    var user = await PreferenceProvider.getJsonFromPrefs("user");
-    String onBoarding = await PreferenceProvider.getString("on_boarding");
+    var user = await PreferenceProvider.instance.getJsonFromPrefs("user");
+    String onBoarding = await PreferenceProvider.instance.getString("on_boarding");
     if(onBoarding.isEmpty) {
       if(context.mounted) {
         Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(

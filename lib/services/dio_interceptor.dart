@@ -8,7 +8,7 @@ class DioInterceptor extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final token = await PreferenceProvider.getString('access_token');
+    final token = await PreferenceProvider.instance.getString('access_token');
     if (token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
       debugPrint('$token');
@@ -42,16 +42,16 @@ class DioInterceptor extends Interceptor {
   }
 
   Future<bool> refreshToken() async {
-    final refreshToken = await PreferenceProvider.getString('refresh_token');
+    final refreshToken = await PreferenceProvider.instance.getString('refresh_token');
     if(refreshToken.isEmpty) return false;
     debugPrint('alllll');
     final response = await dio.post('/auth/refresh-token', data: {'refreshToken': refreshToken});
 
     if (response.statusCode == 201) {
-      await PreferenceProvider.setString('access_token' , response.data['accessToken']);
+      await PreferenceProvider.instance.setString('access_token' , response.data['accessToken']);
       return true;
     } else {
-      await PreferenceProvider.removeJsonToPref('access_token');
+      await PreferenceProvider.instance.removeJsonToPref('access_token');
       return false;
     }
   }}

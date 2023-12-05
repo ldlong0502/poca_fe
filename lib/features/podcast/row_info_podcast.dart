@@ -52,7 +52,6 @@ class RowInfoPodcast extends StatelessWidget {
                     children: [
                       Builder(
                         builder: (context) {
-                          debugPrint(podcast.episodesList[0].duration.toString());
                           var listens = podcast.episodesList.fold(0, (previousValue, element) => previousValue + element.listens);
 
                           return Text(

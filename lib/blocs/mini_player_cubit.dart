@@ -60,7 +60,7 @@ class MiniPlayerCubit extends Cubit<int> {
   }
 
   listen(AudioBook audioBook  , [int value = 0]) async {
-    var temp = await PreferenceProvider.getString('audio_speed');
+    var temp = await PreferenceProvider.instance.getString('audio_speed');
     if(temp.isNotEmpty) {
       speed = double.parse(temp);
     }
@@ -130,7 +130,7 @@ class MiniPlayerCubit extends Cubit<int> {
   }
 
   void setSpeed (double value) async {
-    await PreferenceProvider.setString('audio_speed', value.toString());
+    await PreferenceProvider.instance.setString('audio_speed', value.toString());
 
     speed = value;
     emitState();

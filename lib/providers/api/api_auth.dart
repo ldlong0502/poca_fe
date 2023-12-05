@@ -22,9 +22,9 @@ class ApiAuthentication {
     if(response == null) return false;
     if(response.statusCode == 200) {
       debugPrint(response.toString());
-      await PreferenceProvider.setString('access_token', response.data['accessToken']);
-      await PreferenceProvider.setString('refresh_token', response.data['refreshToken']);
-      await PreferenceProvider.saveJsonToPrefs(response.data['data'] , 'user');
+      await PreferenceProvider.instance.setString('access_token', response.data['accessToken']);
+      await PreferenceProvider.instance.setString('refresh_token', response.data['refreshToken']);
+      await PreferenceProvider.instance.saveJsonToPrefs(response.data['data'] , 'user');
 
       return true;
     } else {
@@ -51,9 +51,9 @@ class ApiAuthentication {
   }
 
   Future<bool> logOut(BuildContext context) async {
-    await PreferenceProvider.removeJsonToPref('access_token');
-    await PreferenceProvider.removeJsonToPref('refresh_token');
-    await PreferenceProvider.removeJsonToPref('user');
+    await PreferenceProvider.instance.removeJsonToPref('access_token');
+    await PreferenceProvider.instance.removeJsonToPref('refresh_token');
+    await PreferenceProvider.instance.removeJsonToPref('user');
     if(context.mounted){
       CustomToast.showBottomToast(context, 'Log out successfully!');
       Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(

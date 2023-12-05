@@ -8,6 +8,8 @@ import 'package:poca/blocs/mini_player_cubit.dart';
 import 'package:poca/configs/app_configs.dart';
 import 'package:poca/configs/constants.dart';
 import 'package:poca/features/blocs/player_cubit.dart';
+import 'package:poca/features/blocs/recently_play_cubit.dart';
+import 'package:poca/features/blocs/subscribe_cubit.dart';
 import 'package:poca/routes/app_routes.dart';
 
 import 'features/blocs/user_cubit.dart';
@@ -25,11 +27,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppConfigs.contextApp = context;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => PlayerCubit(context)),
         BlocProvider(create: (context) => UserCubit()),
+        BlocProvider(create: (context) => SubscribeCubit()),
+        BlocProvider(create: (context) => RecentlyPlayCubit()),
       ],
       child: MaterialApp(
         navigatorObservers: [defaultLifecycleObserver],
