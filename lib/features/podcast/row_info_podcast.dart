@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:poca/configs/constants.dart';
+import 'package:poca/features/blocs/podcast_cubit.dart';
 import 'package:poca/models/podcast.dart';
 import 'package:poca/utils/resizable.dart';
 
 import '../../widgets/network_image_custom.dart';
 
 class RowInfoPodcast extends StatelessWidget {
-  const RowInfoPodcast({super.key, required this.podcast});
+  const RowInfoPodcast({super.key, required this.podcastCubit});
 
-  final Podcast podcast;
+  final PodcastCubit podcastCubit;
 
   @override
   Widget build(BuildContext context) {
+    var podcast = podcastCubit.podcast!;
     return SizedBox(
       height: Resizable.size(context, 180),
       width: double.infinity,
@@ -20,6 +22,7 @@ class RowInfoPodcast extends StatelessWidget {
           Expanded(
               child: NetworkImageCustom(
             url: podcast.imageUrl,
+                borderRadius: BorderRadius.circular(20),
           )),
           const SizedBox(width: 10,),
           Expanded(child: Column(
@@ -41,13 +44,17 @@ class RowInfoPodcast extends StatelessWidget {
                     fontWeight: FontWeight.w600),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.min,
+
                     children: [
                       Builder(
                         builder: (context) {
+                          debugPrint(podcast.episodesList[0].duration.toString());
                           var listens = podcast.episodesList.fold(0, (previousValue, element) => previousValue + element.listens);
+
                           return Text(
                             listens.toString(),
                             overflow: TextOverflow.ellipsis,
@@ -58,16 +65,17 @@ class RowInfoPodcast extends StatelessWidget {
                           );
                         }
                       ),
+                      const SizedBox(width: 2,),
                       const Icon(Icons.headphones ,color: primaryColor,)
                     ],
                   ),
-                  const SizedBox(width: 5,),
+                  const SizedBox(width: 20,),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Builder(
                           builder: (context) {
-                            var fav = podcast.episodesList.fold(0, (previousValue, element) => previousValue + element.favoritesList.length);
+                            var fav = podcast.favoritesList.length;
                             return Text(
                               fav.toString(),
                               overflow: TextOverflow.ellipsis,
@@ -78,6 +86,7 @@ class RowInfoPodcast extends StatelessWidget {
                             );
                           }
                       ),
+                      const SizedBox(width: 2,),
                       const Icon(Icons.favorite ,color: primaryColor,)
                     ],
                   ),

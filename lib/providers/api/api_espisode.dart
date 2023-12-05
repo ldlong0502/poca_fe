@@ -28,4 +28,17 @@ class ApiEpisode {
     }
   }
 
+  Future<bool> increaseListens(String podcastId, String episodeId) async {
+    var response = await ApiProvider().update('/podcasts/$podcastId/increment-listens/$episodeId');
+    debugPrint(response.toString());
+    if(response == null) return false;
+
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

@@ -22,7 +22,29 @@ class Episode {
         required this.imageUrl,
         required this.favoritesList,
         });
-
+  Episode copyWith({
+    String? id,
+    String? title,
+    String? description,
+    int? duration,
+    String? audioFile,
+    int? publishDate,
+    int? listens,
+    String? imageUrl,
+    List<UserModel>? favoritesList,
+  }) {
+    return Episode(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      duration: duration ?? this.duration,
+      audioFile: audioFile ?? this.audioFile,
+      publishDate: publishDate ?? this.publishDate,
+      listens: listens ?? this.listens,
+      imageUrl: imageUrl ?? this.imageUrl,
+      favoritesList: favoritesList ?? this.favoritesList,
+    );
+  }
   factory Episode.fromJson(Map<String, dynamic> json) {
     var favorites = <UserModel>[];
     if (json['favoritesList'] != null) {

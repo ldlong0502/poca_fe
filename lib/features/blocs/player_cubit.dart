@@ -8,6 +8,7 @@ import 'package:poca/models/audio_book.dart';
 import 'package:poca/models/duration_state.dart';
 import 'package:poca/models/mp3.dart';
 import 'package:poca/models/podcast.dart';
+import 'package:poca/providers/api/api_espisode.dart';
 import 'package:poca/providers/preference_provider.dart';
 import 'package:poca/services/sound_service.dart';
 import 'package:poca/utils/custom_toast.dart';

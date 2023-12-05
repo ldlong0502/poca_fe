@@ -26,6 +26,17 @@ class ApiPodcast {
     }
   }
 
+  Future<Podcast?> getPodcastById(String id) async {
+    var response = await ApiProvider().get('/podcasts/$id');
+    if(response == null) return null;
+
+    if(response.statusCode == 200) {
+      return Podcast.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
   Future<List<Podcast>> getListPodcastByTopicId(String id) async {
     var response = await ApiProvider().get('/podcasts/findByTopic/$id');
     if(response == null) return [];
@@ -53,5 +64,18 @@ class ApiPodcast {
       return [];
     }
   }
+
+
+  Future<bool> addOrRemoveUserFavorite(String idPodcast, String idUser , String type ) async {
+    var response = await ApiProvider().post('/podcasts/$idPodcast/$type-favorite/$idUser');
+    if(response == null) return false;
+
+    if(response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
 }

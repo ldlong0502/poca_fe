@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:poca/features/blocs/home_cubit.dart';
+import 'package:poca/widgets/network_image_custom.dart';
 
 import '../../configs/constants.dart';
 import '../../routes/app_routes.dart';
@@ -38,11 +39,11 @@ class TopicSuggest extends StatelessWidget {
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        e.imageUrl,
+                      child: NetworkImageCustom(
+                        url: e.imageUrl,
                         height: Resizable.size(context, 150),
                         width: Resizable.size(context, 150),
-                        fit: BoxFit.fill,
+                        borderRadius: BorderRadius.circular(20),
                       )),
                   const SizedBox(height: 5,),
                   Text(

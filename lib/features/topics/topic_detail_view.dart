@@ -11,6 +11,7 @@ import '../../screens/base_screen.dart';
 import '../../utils/resizable.dart';
 import '../../widgets/header_custom.dart';
 import '../../widgets/loading_progress.dart';
+import '../../widgets/network_image_custom.dart';
 import 'empty_box.dart';
 
 class TopicDetailView extends StatelessWidget {
@@ -47,72 +48,81 @@ class TopicDetailView extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-              Expanded(child:   cubit.listPodcasts.isEmpty
-                  ? const EmptyBox()
-                  : GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing:
-                      Resizable.padding(context, 15),
-                      mainAxisSpacing:
-                      Resizable.padding(context, 10),
-                      childAspectRatio: 0.75),
-                  itemCount: cubit.listPodcasts.length,
-                  itemBuilder: (context, index) {
-                    var podcast = cubit.listPodcasts[index];
-                    return InkWell(
-                      onTap: (){
-                        NavigatorCustom.pushNewScreen(context, PodcastDetailView(podcast: podcast), AppRoutes.podcastDetail);
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  child: Container(
+                Expanded(
+                    child: cubit.listPodcasts.isEmpty
+                        ? const EmptyBox()
+                        : GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing:
+                                        Resizable.padding(context, 15),
+                                    mainAxisSpacing:
+                                        Resizable.padding(context, 10),
+                                    childAspectRatio: 0.75),
+                            itemCount: cubit.listPodcasts.length,
+                            itemBuilder: (context, index) {
+                              var podcast = cubit.listPodcasts[index];
+                              return InkWell(
+                                onTap: () {
+                                  NavigatorCustom.pushNewScreen(
+                                      context,
+                                      PodcastDetailView(podcast: podcast),
+                                      AppRoutes.podcastDetail);
+                                },
+                                child: Container(
                                     decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(20),
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                                podcast.imageUrl),
-                                            fit: BoxFit.fill)),
-                                  )),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                podcast.title,
-                                maxLines: 1,
-                                overflow:TextOverflow.ellipsis ,
-                                style: TextStyle(
-                                    fontSize: Resizable.font(context, 22),
-                                    color: textColor,
-                                    fontWeight: FontWeight.w800),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                podcast.host,
-                                overflow:TextOverflow.ellipsis ,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    fontSize: Resizable.font(context, 18),
-                                    color: secondaryColor,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          )),
-                    );
-                  }))
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: LayoutBuilder(
+                                            builder: (context , c) {
+                                              return NetworkImageCustom(
+                                                  url: podcast.imageUrl,
+                                                  width: c.maxWidth,
+                                                  height: c.maxWidth,
+                                                borderRadius: BorderRadius.circular(20),
+                                              );
+                                            }
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          podcast.title,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontSize:
+                                                  Resizable.font(context, 22),
+                                              color: textColor,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          podcast.host,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              fontSize:
+                                                  Resizable.font(context, 18),
+                                              color: secondaryColor,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    )),
+                              );
+                            }))
               ],
             );
           },

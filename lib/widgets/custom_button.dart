@@ -40,7 +40,7 @@ class CustomButton extends StatelessWidget {
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {
               if (states.contains(MaterialState.pressed)) {
-                return Colors.black26;
+                return primaryColor.withOpacity(0.8);
               }
               return backgroundColor;
             }),
