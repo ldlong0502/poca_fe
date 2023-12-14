@@ -101,7 +101,6 @@ class Dialogs {
     //     });
   }
 
-
   static void showChapter(BuildContext context, MiniPlayerCubit cubit) {
     showModalBottomSheet(
         isScrollControlled: true,
@@ -111,49 +110,51 @@ class Dialogs {
         builder: (context) {
           return SizedBox(
             height: Resizable.height(context) * 0.9,
-            child:  Column(
+            child: Column(
               children: [
                 Container(
                   height: 70,
-                  padding: EdgeInsets.all(
-                      Resizable.padding(context, 20)
-                  ),
+                  padding: EdgeInsets.all(Resizable.padding(context, 20)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Chương ' , style: TextStyle(
-                        color: purpleColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: Resizable.font(context, 18)
-                      ),),
+                      Text(
+                        'Chương ',
+                        style: TextStyle(
+                            color: purpleColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: Resizable.font(context, 18)),
+                      ),
                       CircleAvatar(
                           radius: 15,
-                          child: IconButton(onPressed: () {
-                            Navigator.pop(context);
-                          }, icon: const Icon(Icons.clear_rounded , size: 15,)))
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
+                                Icons.clear_rounded,
+                                size: 15,
+                              )))
                     ],
                   ),
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.all(
-                        Resizable.padding(context, 20)
-                    ),
+                    padding: EdgeInsets.all(Resizable.padding(context, 20)),
                     physics: const BouncingScrollPhysics(),
                     child: Column(
-                     
                       children: [
                         ...cubit.currentAudioBook!.listMp3.toList().map((e) {
                           final isListen = cubit.indexChapter + 1 == e.id;
                           return GestureDetector(
                             onTap: () {
-                             if(!isListen) {
-                               Navigator.pop(context);
-                               cubit.changeChapter(e.id - 1);
-                             }
-                             else {
-                               CustomToast.showBottomToast(context, 'Bạn đang nghe chương này rồi!');
-                             }
+                              if (!isListen) {
+                                Navigator.pop(context);
+                                cubit.changeChapter(e.id - 1);
+                              } else {
+                                CustomToast.showBottomToast(
+                                    context, 'Bạn đang nghe chương này rồi!');
+                              }
                             },
                             child: Container(
                               margin: EdgeInsets.only(
@@ -163,52 +164,72 @@ class Dialogs {
                                   horizontal: Resizable.padding(context, 20),
                                   vertical: Resizable.padding(context, 10)),
                               decoration: BoxDecoration(
-                                  color: !isListen?  Colors.white70 : Colors.deepOrangeAccent.withOpacity(0.5),
+                                  color: !isListen
+                                      ? Colors.white70
+                                      : Colors.deepOrangeAccent
+                                          .withOpacity(0.5),
                                   borderRadius: BorderRadius.circular(1000),
-                                  border: !isListen ?  Border.all(color: purpleColor) : null
-                              ),
+                                  border: !isListen
+                                      ? Border.all(color: purpleColor)
+                                      : null),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.headset , color: Colors.grey,  size: 35,),
-                                  const SizedBox(width: 20,),
+                                  const Icon(
+                                    Icons.headset,
+                                    color: Colors.grey,
+                                    size: 35,
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        if(isListen)
-                                        AutoSizeText('Bạn đang nghe',
-                                          style: TextStyle(
-                                              fontSize: Resizable.font(context, 12),
-                                              color: Colors.black.withOpacity(0.9),
-                                              fontWeight: FontWeight.w600
-
+                                        if (isListen)
+                                          AutoSizeText(
+                                            'Bạn đang nghe',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    Resizable.font(context, 12),
+                                                color: Colors.black
+                                                    .withOpacity(0.9),
+                                                fontWeight: FontWeight.w600),
                                           ),
-                                        ),
-                                        AutoSizeText(e.title,
-                                        style: TextStyle(
-                                          fontSize: Resizable.font(context, 18),
-                                          color: purpleColor.withOpacity(0.9),
-                                          fontWeight: FontWeight.w700
-
-                                        ),
+                                        AutoSizeText(
+                                          e.title,
+                                          style: TextStyle(
+                                              fontSize:
+                                                  Resizable.font(context, 18),
+                                              color:
+                                                  purpleColor.withOpacity(0.9),
+                                              fontWeight: FontWeight.w700),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  if(isListen)
+                                  if (isListen)
                                     AvatarGlow(
                                       glowColor: Colors.blue,
                                       endRadius: 30.0,
-                                      duration: const Duration(milliseconds: 2000),
+                                      duration:
+                                          const Duration(milliseconds: 2000),
                                       repeat: true,
                                       showTwoGlows: true,
-                                      repeatPauseDuration: const Duration(milliseconds: 100),
-                                      child: Material(     // Replace this child with your own
+                                      repeatPauseDuration:
+                                          const Duration(milliseconds: 100),
+                                      child: Material(
+                                        // Replace this child with your own
                                         elevation: 8.0,
                                         shape: const CircleBorder(),
                                         child: CircleAvatar(
                                           backgroundColor: Colors.grey.shade300,
-                                          child: Icon(Icons.volume_down_rounded , color: pinkColor, size: Resizable.size(context,20),),
+                                          child: Icon(
+                                            Icons.volume_down_rounded,
+                                            color: pinkColor,
+                                            size: Resizable.size(context, 20),
+                                          ),
                                           radius: 15.0,
                                         ),
                                       ),
@@ -218,7 +239,9 @@ class Dialogs {
                             ),
                           );
                         }).toList(),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                       ],
                     ),
                   ),
@@ -229,5 +252,25 @@ class Dialogs {
         });
   }
 
+  static void showBottomSheet(BuildContext context, Widget widget) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: primaryColor.withOpacity(0.9),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (context) {
+          return widget;
+        });
+  }
 
+  static void showDialogCustom(BuildContext context, Widget widget) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return widget;
+      },
+    );
+  }
 }

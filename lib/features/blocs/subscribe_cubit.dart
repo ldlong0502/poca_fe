@@ -4,11 +4,18 @@ import 'package:poca/models/user_model.dart';
 
 import '../../providers/api/api_podcast.dart';
 
-class SubscribeCubit extends Cubit<List<Podcast>> {
-  SubscribeCubit() : super([]);
+class SubscribeCubit extends Cubit<int> {
+  SubscribeCubit() : super(0);
+  List<Podcast> listPodcast = [];
 
+  bool isGrid = true;
+
+  updateView() {
+    isGrid = !isGrid;
+    emit(state+1);
+  }
   load(UserModel user) async {
-    var listSubscribes = await ApiPodcast.instance.getPodcastSubscribeByUserId(user.id);
-    emit(listSubscribes);
+     listPodcast = await ApiPodcast.instance.getPodcastSubscribeByUserId(user.id);
+    emit(state + 1);
   }
 }

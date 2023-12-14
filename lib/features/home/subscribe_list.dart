@@ -7,8 +7,10 @@ import 'package:poca/features/podcast/podcast_detail_view.dart';
 import 'package:poca/models/podcast.dart';
 import 'package:poca/models/user_model.dart';
 
+
 import '../../configs/constants.dart';
 import '../../routes/app_routes.dart';
+import '../../screens/subscribe_see_all.dart';
 import '../../utils/navigator_custom.dart';
 import '../../utils/resizable.dart';
 import '../../widgets/network_image_custom.dart';
@@ -24,14 +26,17 @@ class SubscribeList extends StatelessWidget {
         if(user != null) {
           context.read<SubscribeCubit>().load(user);
         }
-        return BlocBuilder<SubscribeCubit, List<Podcast>>(
+        return BlocBuilder<SubscribeCubit, int>(
           builder: (context, list) {
-            if(list.isEmpty) return Container();
+            if(list == 0) return Container();
+            final cubit = context.read<SubscribeCubit>();
+
+            if(cubit.listPodcast.isEmpty) return Container();
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TitleSeeAll(title: 'Your subscriptions', onSeeAll: () {
-
+                  NavigatorCustom.pushNewScreen(context, SubscriptionSeeAll(cubit:  cubit, title: 'Your subscriptions',), AppRoutes.subsSeeAll);
                 }),
                 SizedBox(
                   height: 220,
@@ -42,10 +47,10 @@ class SubscribeList extends StatelessWidget {
                         top: 10
                     ),
                     scrollDirection: Axis.horizontal,
-                    children: list.map((e) {
+                    children: cubit.listPodcast.map((e) {
                       return Padding(
                         padding: const EdgeInsets.only(right: 10.0),
-                        child: InkWell(
+                        child: GestureDetector(
                           onTap: (){
                             NavigatorCustom.pushNewScreen(
                                 context,

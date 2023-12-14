@@ -24,30 +24,33 @@ class CustomMiniPlayer extends StatelessWidget {
           left: playerCubit.isMiniPlayer ? 15 : 0,
           right: playerCubit.isMiniPlayer ? 15 : 0,
           duration: const Duration(milliseconds: 0),
-          child: Miniplayer(
-              minHeight: Resizable.size(context, 60),
-              onDismiss: () {
-                playerCubit.dismissMiniPlayer();
-              },
-              elevation: 8,
-              controller: playerCubit.controller,
-              maxHeight: Resizable.height(context),
-              builder: (height, percentage) {
-                if(playerCubit.isFirstOpenMax) {
-                  playerCubit.openMaxPlayer();
-                  playerCubit.setFirstOpenMax(false);
+          child: Visibility(
+            visible: !playerCubit.isHideBottomNavigator,
+            child: Miniplayer(
+                minHeight: Resizable.size(context, 60),
+                onDismiss: () {
+                  playerCubit.dismissMiniPlayer();
+                },
+                elevation: 8,
+                controller: playerCubit.controller,
+                maxHeight: Resizable.height(context),
+                builder: (height, percentage) {
+                  if(playerCubit.isFirstOpenMax) {
+                    playerCubit.openMaxPlayer();
+                    playerCubit.setFirstOpenMax(false);
+                  }
+                  if (percentage > 0.2 && playerCubit.isMiniPlayer) {
+                    playerCubit.openMaxPlayer();
+                  }
+                  else if (percentage < 0.2 && !playerCubit.isMiniPlayer) {
+                    playerCubit.openMiniPlayer();
+                  }
+                  if(percentage < 0.2) {
+                    return const MinPlayerPodcast();
+                  }
+                  return const MaxPlayerPodcast();
                 }
-                if (percentage > 0.2 && playerCubit.isMiniPlayer) {
-                  playerCubit.openMaxPlayer();
-                }
-                else if (percentage < 0.2 && !playerCubit.isMiniPlayer) {
-                  playerCubit.openMiniPlayer();
-                }
-                if(percentage < 0.2) {
-                  return const MinPlayerPodcast();
-                }
-                return const MaxPlayerPodcast();
-              }
+            ),
           ),
         );
       },

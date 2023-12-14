@@ -41,4 +41,31 @@ class ApiEpisode {
     }
   }
 
+  Future<List<Episode>> search(String value) async {
+    var response = await ApiProvider().get('/podcasts/episodes/search?keyword=$value' );
+    if(response == null) return [];
+
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      List<Episode> data =
+      (response.data as List).map((e) => Episode.fromJson(e)).toList();
+      return data;
+    } else {
+      return [];
+    }
+  }
+  Future<Episode?> getEpisode(String id) async {
+    print('=>>>>>>>>$id');
+    var response = await ApiProvider().get('/podcasts/episodes/$id');
+    debugPrint(response.toString());
+    if(response == null) return null;
+
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      return Episode.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
 }

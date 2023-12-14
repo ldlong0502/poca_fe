@@ -9,9 +9,11 @@ import 'package:poca/features/blocs/recently_play_cubit.dart';
 import 'package:poca/features/home/dialog_play_history.dart';
 import 'package:poca/features/home/title_see_all.dart';
 import 'package:poca/models/history_podcast.dart';
+import 'package:poca/screens/recently_see_all.dart';
 import 'package:poca/utils/convert_utils.dart';
 import 'package:poca/utils/resizable.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import '../../routes/app_routes.dart';
 import '../../utils/navigator_custom.dart';
 import '../../widgets/network_image_custom.dart';
 
@@ -22,15 +24,17 @@ class RecentlyPodcastView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<RecentlyPlayCubit>().load();
-    return BlocBuilder<RecentlyPlayCubit, List<HistoryPodcast>>(
-      builder: (context, list) {
-        debugPrint('=>>>>>>>>> test: ${list.length}');
-        if(list.isEmpty) return Container();
+    return BlocBuilder<RecentlyPlayCubit,int>(
+      builder: (context, state) {
+        final cubit = context.read<RecentlyPlayCubit>();
+        if(state == 0 || cubit.listHistory.isEmpty) return Container();
+
+        var list = cubit.listHistory;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TitleSeeAll(title: 'Recently Played', onSeeAll: () {
-
+              NavigatorCustom.pushNewScreen(context, RecentlySeeAll(cubit:  cubit, title: 'Recently Played',), AppRoutes.recentlySeeAll);
             }),
             GridView.builder(
               shrinkWrap: true,
@@ -49,14 +53,27 @@ class RecentlyPodcastView extends StatelessWidget {
 
                 ), itemBuilder: (context , index) {
 
-                  var podcast = list[index].podcast.episodesList[list[index].indexChapter];
+                  var podcast = list[index].podcast;
+                  var episode = list[index].podcast.episodesList[list[index].indexChapter];
                   return Material(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(15),
                     child: InkWell(
                       onTap: () async {
+                        final cubit = context.read<PlayerCubit>();
+                        if( !cubit.checkPermissionBeforeListen(podcast, list[index].indexChapter)) {
+                          return;
+                        }
                         await showDialog(context: context, builder: (context ) {
-                          return DialogPlayHistory(onPlayAgain: () {}, onPlayContinue: (){} , historyPodcast: list[index],);
+                          return DialogPlayHistory(
+                            onPlayAgain: () {
+                              cubit.listen(podcast,list[index].indexChapter );
+                              Navigator.pop(context);
+
+                          }, onPlayContinue: (){
+                            cubit.listen(podcast,list[index].indexChapter , list[index].duration );
+                            Navigator.pop(context);
+                          } , historyPodcast: list[index],);
                         });
                       },
                       child: Container(
@@ -98,7 +115,7 @@ class RecentlyPodcastView extends StatelessWidget {
                                     children: [
 
                                       Expanded(
-                                        child: Text(podcast.title,
+                                        child: Text(episode.title,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -113,7 +130,7 @@ class RecentlyPodcastView extends StatelessWidget {
                                           child: LinearPercentIndicator(
                                             padding: EdgeInsets.zero,
                                             lineHeight: 6.0,
-                                            percent: list[index].duration / (podcast.duration * 1000),
+                                            percent: list[index].duration / (episode.duration * 1000),
                                             barRadius: const Radius.circular(1000),
                                             backgroundColor: Colors.grey.shade400,
                                             progressColor: Colors.blue,

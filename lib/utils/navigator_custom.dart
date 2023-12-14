@@ -12,5 +12,6 @@ class NavigatorCustom {
       PageTransitionAnimation.cupertino,
       settings:  RouteSettings(name: routes),
     );
+
   }
 }

@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/features/account/none_account_view.dart';
 import 'package:poca/features/blocs/user_cubit.dart';
 import 'package:poca/models/user_model.dart';
+import 'package:poca/routes/app_routes.dart';
 import 'package:poca/screens/base_screen.dart';
+import 'package:poca/screens/playlist_screen.dart';
+import 'package:poca/utils/navigator_custom.dart';
 import 'package:poca/utils/resizable.dart';
 import 'package:poca/widgets/custom_button.dart';
 
@@ -29,14 +32,12 @@ class AccountScreen extends StatelessWidget {
         'onClick': () {},
       },
       {
-        'title': 'Languages',
+        'title': 'Playlist',
         'showIcon': true,
-        'onClick': () {},
-      },
-      {
-        'title': 'Playback',
-        'showIcon': true,
-        'onClick': () {},
+        'onClick': () {
+          print('++++++++ click');
+          NavigatorCustom.pushNewScreen(context, const PlaylistScreen(), AppRoutes.playlist);
+        },
       },
       {
         'title': 'Audio Quality',
@@ -85,31 +86,34 @@ class AccountScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       ...mapItems.map((e) {
-                        return Container(
-                          height: Resizable.size(context, 45),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: Text(
-                                    e['title'] as String,
-                                    style: TextStyle(
-                                        fontSize: Resizable.font(context, 20),
-                                        color: textColor,
-                                        fontWeight: FontWeight.w600),
-                                  )),
-                              SizedBox(
-                                width: Resizable.size(context, 50),
-                                child: !(e['showIcon'] as bool)
-                                    ? null
-                                    : IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: secondaryColor,
+                        return GestureDetector(
+                          onTap: e['onClick'] as Function(),
+                          child: SizedBox(
+                            height: Resizable.size(context, 45),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: Text(
+                                      e['title'] as String,
+                                      style: TextStyle(
+                                          fontSize: Resizable.font(context, 20),
+                                          color: textColor,
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                                SizedBox(
+                                  width: Resizable.size(context, 50),
+                                  child: !(e['showIcon'] as bool)
+                                      ? null
+                                      : IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: secondaryColor,
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         );
                       }).toList(),

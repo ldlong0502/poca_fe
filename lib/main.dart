@@ -11,6 +11,7 @@ import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/features/blocs/recently_play_cubit.dart';
 import 'package:poca/features/blocs/subscribe_cubit.dart';
 import 'package:poca/routes/app_routes.dart';
+import 'package:poca/services/dynamic_links_service.dart';
 
 import 'features/blocs/user_cubit.dart';
 import 'firebase_options.dart';
@@ -19,6 +20,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  DynamicLinksService.instance.initDynamicLink();
   runApp(const MyApp());
 }
 

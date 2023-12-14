@@ -6,7 +6,7 @@ import 'package:poca/services/dio_interceptor.dart';
 class ApiProvider {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: AppConfigs.endPoint,
+      baseUrl: AppConfigs().endPoint,
       responseType: ResponseType.json,
       contentType: 'application/json',
     )

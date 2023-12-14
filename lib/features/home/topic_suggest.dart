@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/features/blocs/home_cubit.dart';
 import 'package:poca/features/home/title_see_all.dart';
 import 'package:poca/widgets/network_image_custom.dart';
@@ -7,6 +8,7 @@ import '../../configs/constants.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/navigator_custom.dart';
 import '../../utils/resizable.dart';
+import '../blocs/player_cubit.dart';
 import '../topics/topic_detail_view.dart';
 
 class TopicSuggest extends StatelessWidget {
@@ -20,7 +22,8 @@ class TopicSuggest extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TitleSeeAll(title: 'Suggest topics', onSeeAll: () {
-
+          final cubit = context.read<PlayerCubit>();
+          cubit.persistentTabController.jumpToTab(1);
         }),
         SizedBox(
           height: 220,
@@ -34,7 +37,7 @@ class TopicSuggest extends StatelessWidget {
             children: homeCubit.listTopics.map((e) {
               return Padding(
                 padding: const EdgeInsets.only(right: 10.0),
-                child: InkWell(
+                child: GestureDetector(
                   onTap: (){
                     NavigatorCustom.pushNewScreen(
                         context,

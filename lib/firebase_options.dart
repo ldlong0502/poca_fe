@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyD0QER4YRSTHahAV7UO-cbdZm8dBByToas',
-    appId: '1:842433810589:android:c7a1ee4d359ddc6dc8c474',
+    appId: '1:842433810589:android:903889d48abb66fec8c474',
     messagingSenderId: '842433810589',
     projectId: 'uniwave-824e9',
     storageBucket: 'uniwave-824e9.appspot.com',

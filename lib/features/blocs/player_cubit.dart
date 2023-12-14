@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:poca/configs/app_configs.dart';
 import 'package:poca/features/blocs/recently_play_cubit.dart';
 import 'package:poca/models/audio_book.dart';
@@ -20,6 +21,7 @@ class PlayerCubit extends Cubit<int> {
   PlayerCubit(this.context) : super(0);
   final BuildContext context;
   bool isMiniPlayer = true;
+  bool isHideBottomNavigator = false;
   double speed = 1;
   final MiniplayerController controller = MiniplayerController();
   final soundService = SoundService.instance;
@@ -31,8 +33,13 @@ class PlayerCubit extends Cubit<int> {
   Podcast? currentPodcast;
   DurationState durationState = const DurationState(
       progress: Duration.zero, buffered: Duration.zero, total: Duration.zero);
-
+  PersistentTabController persistentTabController = PersistentTabController();
   load() {}
+
+  updateHideBottomNavigator(bool value) {
+    isHideBottomNavigator = value;
+    emitState();
+  }
 
   init() {
     isPlay = false;
@@ -64,16 +71,21 @@ class PlayerCubit extends Cubit<int> {
     controller.animateToHeight(state: PanelState.MIN);
     emit(state + 1);
   }
-
-  listen(Podcast podcast  , [int value = 0]) async {
+  bool checkPermissionBeforeListen(Podcast podcast  , int value) {
     if(podcast.episodesList.isEmpty) {
       Fluttertoast.showToast(msg: 'Sorry! None of Episodes');
-      return;
+      return false;
     }
     if(currentPodcast!= null && podcast.id == currentPodcast!.id &&  value == indexChapter) {
       Fluttertoast.showToast(msg: 'You are listening this episodes');
-      return;
+      return false;
     }
+    return true;
+  }
+  listen(Podcast podcast  , [int value = 0 , int historyDuration = 0]) async {
+   if( !checkPermissionBeforeListen(podcast, value)) {
+     return;
+   }
     var temp = await PreferenceProvider.instance.getString('audio_speed');
     if(temp.isNotEmpty) {
       speed = double.parse(temp);
@@ -85,7 +97,7 @@ class PlayerCubit extends Cubit<int> {
     currentPodcast = podcast;
     indexChapter = value;
 
-    final duration = await soundService.setUrl(podcast.episodesList[indexChapter].audioFile);
+    final duration = await soundService.setUrl(podcast.episodesList[indexChapter].audioFile, Duration(milliseconds: historyDuration) );
     durationState = durationState.copyWith(total: duration);
     isLoading = false;
     emitState();

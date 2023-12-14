@@ -93,7 +93,8 @@ class _MainScreenState extends State<MainScreen> with  LifecycleAware, Lifecycle
                 PersistentTabView(
                   context,
                   screens: child,
-                  hideNavigationBar: !cubit.isMiniPlayer,
+                  controller: cubit.persistentTabController,
+                  hideNavigationBar: !cubit.isMiniPlayer || cubit.isHideBottomNavigator,
                   items: navBarsItems(),
                   confineInSafeArea: true,
                   backgroundColor: Colors.white,

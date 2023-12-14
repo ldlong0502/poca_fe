@@ -4,16 +4,16 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../configs/constants.dart';
 
 class LoadingProgress extends StatelessWidget {
-  const LoadingProgress({Key? key}) : super(key: key);
-
+  const LoadingProgress({Key? key,  this.color = primaryColor}) : super(key: key);
+  final Color color;
   @override
   Widget build(BuildContext context) {
-    return  const Center(
+    return   Center(
       child: SizedBox(
           child: SpinKitCircle(
-            color: primaryColor,
+            color: color,
             size: 50.0,
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
           )),
     );
   }

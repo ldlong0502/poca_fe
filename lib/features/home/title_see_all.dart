@@ -21,11 +21,14 @@ class TitleSeeAll extends StatelessWidget {
               color: textColor,
               fontWeight: FontWeight.w600
           ),),
-          Text('See All', style: TextStyle(
-              fontSize: Resizable.font(context, 18),
-              color: textColor,
-              fontWeight: FontWeight.w600
-          ),),
+          InkWell(
+            onTap: onSeeAll,
+            child: Text('See All', style: TextStyle(
+                fontSize: Resizable.font(context, 18),
+                color: textColor,
+                fontWeight: FontWeight.w600
+            ),),
+          ),
 
         ],
       ),

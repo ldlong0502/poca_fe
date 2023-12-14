@@ -19,6 +19,10 @@ class AppRoutes {
   static const signUp = '/signUp';
   static const topicDetail = '/topicDetail';
   static const podcastDetail = '/podcastDetail';
+  static const playlist = '/playlist';
+  static const playlistDetail = '/playlistDetail';
+  static const subsSeeAll = '/subsSeeAll';
+  static const recentlySeeAll = '/recentlySeeAll';
 
   static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {

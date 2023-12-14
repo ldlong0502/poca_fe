@@ -7,6 +7,7 @@ import 'package:poca/utils/custom_toast.dart';
 import 'package:poca/widgets/custom_text_field.dart';
 
 import '../configs/constants.dart';
+import '../features/dialogs/login_dialog.dart';
 import '../routes/app_routes.dart';
 import '../utils/resizable.dart';
 import '../widgets/custom_button.dart';
@@ -29,28 +30,33 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    EasyLoading.instance
-      ..loadingStyle = EasyLoadingStyle.custom
-      ..indicatorColor = Colors.white
-      ..textColor = Colors.white
-      ..backgroundColor = primaryColor;
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: BlocProvider(
             create: (context) => LoginCubit(),
             child: BlocConsumer<LoginCubit, LoginStatus>(
-              listener: (context, state) {
+              listener: (context, state)  async {
                 if (state == LoginStatus.loading) {
-                  EasyLoading.show(status: 'Loading...');
+                  await showDialog<void>(
+                    context: context,
+                    builder: (BuildContext dialogContext) {
+                      return const LoadingDialog();
+                    },
+                  );
                 }
                 if (state == LoginStatus.failed) {
-                  EasyLoading.dismiss();
-                  CustomToast.showBottomToast(
-                      context, 'Username or password invalid');
+                 if(context.mounted) {
+                   Navigator.pop(context);
+                   await showDialog<void>(
+                     context: context,
+                     builder: (BuildContext dialogContext) {
+                       return const LoginErrorDialog();
+                     },
+                   );
+                 }
                 }
                 if (state == LoginStatus.success) {
-                  EasyLoading.dismiss();
                   CustomToast.showBottomToast(context, 'Welcome to Poca');
                   Navigator.of(context, rootNavigator: true)
                       .pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false);

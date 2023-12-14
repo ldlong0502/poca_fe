@@ -16,6 +16,7 @@ class CustomTextField extends StatelessWidget {
         this.onChanged,
       this.fontSize = 20,
         this.isMaxSize = false,
+        this.textColor = Colors.black,
       required this.isPassword});
 
   final TextEditingController controller;
@@ -27,6 +28,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final double fontSize;
   final bool isMaxSize;
+  final Color textColor;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -47,7 +49,7 @@ class CustomTextField extends StatelessWidget {
               focusNode: focusNode,
               style: TextStyle(
                   fontSize: Resizable.font(context, fontSize),
-                  color: Colors.black,
+                  color: textColor,
                   fontWeight: FontWeight.w600),
               decoration: InputDecoration(
                 border: OutlineInputBorder(

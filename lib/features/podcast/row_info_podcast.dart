@@ -31,6 +31,8 @@ class RowInfoPodcast extends StatelessWidget {
             children: [
               Text(
                 podcast.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: textColor,
                     fontSize: Resizable.font(context, 24),
@@ -38,6 +40,8 @@ class RowInfoPodcast extends StatelessWidget {
               ),
               Text(
                 podcast.host,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: secondaryColor,
                     fontSize: Resizable.font(context, 20),

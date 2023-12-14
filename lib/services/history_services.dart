@@ -34,4 +34,16 @@ class HistoryService {
     debugPrint('=>>>>>>>>>>>>> ${listHistory.length}');
     
   }
+
+  removeHistory(Podcast podcast) async {
+    var listHistory =
+    await HistoryPodcastProvider.instance.getListHistoryPodcast();
+    final index =
+    listHistory.map((e) => e.podcast.id).toList().indexOf(podcast.id);
+    if (index != -1) {
+      listHistory.removeAt(index);
+    }
+    final json = jsonEncode(listHistory);
+    await PreferenceProvider.instance.setString(AppConfigs.KEY_RECENTLY_PLAYED, json);
+  }
 }

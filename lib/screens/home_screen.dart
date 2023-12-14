@@ -24,7 +24,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppConfigs.contextApp = context;
     return BaseScreen(
       title:  'Good morning,',
       child: BlocProvider(

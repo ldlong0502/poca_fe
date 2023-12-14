@@ -11,7 +11,7 @@ class DioInterceptor extends Interceptor {
     final token = await PreferenceProvider.instance.getString('access_token');
     if (token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
-      debugPrint('$token');
+      debugPrint(token);
     }
     options.headers['Content-Type']= 'application/json';
     super.onRequest(options, handler);
@@ -24,6 +24,7 @@ class DioInterceptor extends Interceptor {
       var res = await refreshToken();
       if(res) {
         handler.resolve(await _retry(err.requestOptions));
+        return;
       }
     }
 
@@ -44,14 +45,21 @@ class DioInterceptor extends Interceptor {
   Future<bool> refreshToken() async {
     final refreshToken = await PreferenceProvider.instance.getString('refresh_token');
     if(refreshToken.isEmpty) return false;
-    debugPrint('alllll');
-    final response = await dio.post('/auth/refresh-token', data: {'refreshToken': refreshToken});
 
-    if (response.statusCode == 201) {
-      await PreferenceProvider.instance.setString('access_token' , response.data['accessToken']);
-      return true;
-    } else {
-      await PreferenceProvider.instance.removeJsonToPref('access_token');
-      return false;
-    }
+   try {
+     final response = await dio.post('/auth/refresh-token', data: {'token': refreshToken});
+     debugPrint('rftoken: $refreshToken');
+     debugPrint('=>>>>>>>>>>>>> ${response.statusCode.toString()}');
+     if (response.statusCode == 200) {
+       await PreferenceProvider.instance.setString('access_token' , response.data['accessToken']);
+       return true;
+     } else {
+       await PreferenceProvider.instance.removeJsonToPref('access_token');
+       return false;
+     }
+   }
+   catch( err) {
+     debugPrint('$err');
+     return false;
+   }
   }}
