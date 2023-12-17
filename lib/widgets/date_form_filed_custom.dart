@@ -17,6 +17,7 @@ class DateFormFieldCustom extends StatefulWidget {
     this.onChanged,
     this.fontSize = 20,
     this.isMaxSize = false,
+    this.textColor = Colors.black,
   });
 
   final TextEditingController controller;
@@ -26,6 +27,7 @@ class DateFormFieldCustom extends StatefulWidget {
   final Function? onChanged;
   final double fontSize;
   final bool isMaxSize;
+  final Color textColor;
 
   @override
   State<DateFormFieldCustom> createState() => _DateFormFieldCustomState();
@@ -47,49 +49,56 @@ class _DateFormFieldCustomState extends State<DateFormFieldCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-        textAlignVertical: TextAlignVertical.center,
-        controller: widget.controller,
-        obscureText: false,
-        validator: (value) {
-          return widget.onValidate(value);
-        },
-        onChanged: widget.onChanged == null
-            ? null
-            : (value) {
-          widget.onChanged!(value);
-        },
-        focusNode: widget.focusNode,
-        style: TextStyle(
-            fontSize: Resizable.font(context, widget.fontSize),
-            color: Colors.black,
-            fontWeight: FontWeight.w600),
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10)),
-          fillColor: secondaryColor.withOpacity(0.25),
-          filled: true,
-          hintText: widget.title,
-          hintStyle: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: Resizable.font(context, widget.fontSize),
-              color: secondaryColor),
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: Resizable.padding(context, 20),
-            vertical: Resizable.padding(context, 20),
-          ),
-          constraints: BoxConstraints(
-            maxWidth: widget.isMaxSize
-                ? double.infinity
-                : Resizable.width(context) * 0.8,
-          ),
-          suffixIcon: IconButton(
-            onPressed: () {
-              _selectDate(context);
+    return InkWell(
+      onTap: () {
+        _selectDate(context);
+      },
+      child: IgnorePointer(
+        child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
+            controller: widget.controller,
+            obscureText: false,
+            validator: (value) {
+              return widget.onValidate(value);
             },
-            icon: const Icon(Icons.calendar_month, color: secondaryColor),
-          ),
-        ));
+            onChanged: widget.onChanged == null
+                ? null
+                : (value) {
+              widget.onChanged!(value);
+            },
+            focusNode: widget.focusNode,
+            style: TextStyle(
+                fontSize: Resizable.font(context, widget.fontSize),
+                color: widget.textColor,
+                fontWeight: FontWeight.w600),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10)),
+              fillColor: secondaryColor.withOpacity(0.25),
+              filled: true,
+              hintText: widget.title,
+              hintStyle: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: Resizable.font(context, widget.fontSize),
+                  color: secondaryColor),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: Resizable.padding(context, 20),
+                vertical: Resizable.padding(context, 20),
+              ),
+              constraints: BoxConstraints(
+                maxWidth: widget.isMaxSize
+                    ? double.infinity
+                    : Resizable.width(context) * 0.8,
+              ),
+              suffixIcon: IconButton(
+                onPressed: () {
+
+                },
+                icon: const Icon(Icons.calendar_month, color: secondaryColor),
+              ),
+            )),
+      ),
+    );
   }
 }

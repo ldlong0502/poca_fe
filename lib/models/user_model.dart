@@ -58,4 +58,32 @@ class UserModel {
       '__v': v,
     };
   }
+
+  UserModel copyWith({
+    String? id,
+    String? username,
+    String? email,
+    String? password,
+    String? fullName,
+    DateTime? dateOfBirth,
+    String? imageUrl,
+    bool? isAdmin,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    int? v,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      username: username ?? this.username,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      fullName: fullName ?? this.fullName,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      imageUrl: imageUrl ?? this.imageUrl,
+      isAdmin: isAdmin ?? this.isAdmin,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      v: v ?? this.v,
+    );
+  }
 }

@@ -23,6 +23,7 @@ class AppRoutes {
   static const playlistDetail = '/playlistDetail';
   static const subsSeeAll = '/subsSeeAll';
   static const recentlySeeAll = '/recentlySeeAll';
+  static const editAccount = '/editAccount';
 
   static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {

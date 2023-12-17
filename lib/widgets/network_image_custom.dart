@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:poca/configs/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../utils/resizable.dart';
@@ -26,7 +27,6 @@ class NetworkImageCustom extends StatelessWidget {
         fit: BoxFit.fill,
         width: width,
         height: height,
-
         placeholder: (context, url) {
           return Shimmer.fromColors(
               baseColor: Colors.grey[100]!,

@@ -17,7 +17,7 @@ class CustomTextField extends StatelessWidget {
       this.fontSize = 20,
         this.isMaxSize = false,
         this.textColor = Colors.black,
-      required this.isPassword});
+      required this.isPassword, this.enabled =true});
 
   final TextEditingController controller;
   final FocusNode? focusNode;
@@ -29,6 +29,7 @@ class CustomTextField extends StatelessWidget {
   final double fontSize;
   final bool isMaxSize;
   final Color textColor;
+  final bool enabled;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -39,6 +40,7 @@ class CustomTextField extends StatelessWidget {
           return TextFormField(
               textAlignVertical: TextAlignVertical.center,
               controller: controller,
+              enabled: enabled,
               obscureText: isPassword ? !state : false,
               validator: (value) {
                 return onValidate(value);

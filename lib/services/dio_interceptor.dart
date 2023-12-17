@@ -51,6 +51,7 @@ class DioInterceptor extends Interceptor {
      debugPrint('rftoken: $refreshToken');
      debugPrint('=>>>>>>>>>>>>> ${response.statusCode.toString()}');
      if (response.statusCode == 200) {
+       debugPrint('=>>>>>>>>>>>>>accessToken ${response.data['accessToken']}');
        await PreferenceProvider.instance.setString('access_token' , response.data['accessToken']);
        return true;
      } else {
