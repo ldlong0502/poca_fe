@@ -34,6 +34,7 @@ class NoneAccountView extends StatelessWidget {
                   children: [
                     Text(
                       'Sign in for the best experience',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: Resizable.font(context, 20),
                           color: textColor,

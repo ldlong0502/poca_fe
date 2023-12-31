@@ -173,29 +173,5 @@ class MaxPlayerPodcast extends StatelessWidget {
     );
   }
 
-  void popToAudioBookDetail(BuildContext context , AudioBook audioBook) {
-
-    final newRouteName = AppRoutes.audioBookDetail + audioBook.id.toString();
-    bool isNewRouteSameAsCurrent = false;
-
-    Navigator.popUntil(context, (route) {
-      if (route.settings.name == newRouteName) {
-        isNewRouteSameAsCurrent = true;
-      }
-      return true;
-    });
-
-    if (!isNewRouteSameAsCurrent) {
-      if(context.mounted) {
-        NavigatorCustom.pushNewScreen(AppConfigs.contextApp!,  AudioBookDetailScreen(
-            audioBook: audioBook ), newRouteName);
-      }
-    }
-    else {
-      Navigator.popUntil(context, ModalRoute.withName(newRouteName));
-    }
-
-
-  }
 
 }

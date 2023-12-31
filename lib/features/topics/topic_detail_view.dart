@@ -7,11 +7,13 @@ import 'package:poca/routes/app_routes.dart';
 import 'package:poca/utils/navigator_custom.dart';
 
 import '../../configs/constants.dart';
+import '../../models/channel_model.dart';
 import '../../screens/base_screen.dart';
 import '../../utils/resizable.dart';
 import '../../widgets/header_custom.dart';
 import '../../widgets/loading_progress.dart';
 import '../../widgets/network_image_custom.dart';
+import '../blocs/channel_cubit.dart';
 import 'empty_box.dart';
 
 class TopicDetailView extends StatelessWidget {
@@ -109,15 +111,25 @@ class TopicDetailView extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        Text(
-                                          podcast.host,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              fontSize:
-                                                  Resizable.font(context, 18),
-                                              color: secondaryColor,
-                                              fontWeight: FontWeight.w600),
+                                        BlocProvider(
+                                          create: (context) => ChannelCubit(podcast.host),
+                                          child: BlocBuilder<ChannelCubit, ChannelModel?>(
+                                            builder: (context, state) {
+                                              if(state ==  null) {
+                                                return const Text('');
+                                              }
+                                              return Text(
+                                                state.name,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontSize:
+                                                    Resizable.font(context, 18),
+                                                    color: secondaryColor,
+                                                    fontWeight: FontWeight.w600),
+                                              );
+                                            },
+                                          ),
                                         ),
                                       ],
                                     )),

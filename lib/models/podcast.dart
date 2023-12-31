@@ -13,7 +13,6 @@ class Podcast {
   final List<Episode> episodesList;
   final List<UserModel> subscribesList;
   final List<UserModel> favoritesList;
-  final UserModel? publishUser;
 
   Podcast(
       { required this.id,
@@ -26,7 +25,6 @@ class Podcast {
         required this.subscribesList,
         required this.favoritesList,
         required this.imageUrl,
-        this.publishUser,
        });
   Podcast copyWith({
     String? id,
@@ -39,7 +37,6 @@ class Podcast {
     List<Episode>? episodesList,
     List<UserModel>? subscribesList,
     List<UserModel>? favoritesList,
-    UserModel? publishUser,
   }) {
     return Podcast(
       id: id ?? this.id,
@@ -52,7 +49,6 @@ class Podcast {
       episodesList: episodesList ?? this.episodesList,
       subscribesList: subscribesList ?? this.subscribesList,
       favoritesList: favoritesList ?? this.favoritesList,
-      publishUser: publishUser ?? this.publishUser,
     );
   }
   factory Podcast.fromJson(Map<String, dynamic> json) {
@@ -91,7 +87,6 @@ class Podcast {
       imageUrl: json['imageUrl']?? '',
       subscribesList: subscribes,
       favoritesList: favorites,
-      publishUser: json['publishUser'] == null ? null : UserModel.fromJson(json['publishUser']),
     );
   }
 
@@ -101,7 +96,20 @@ class Podcast {
       'title': title,
       'description': description,
       'host': host,
-      'audioFile': publishUser,
+      'publishDate': publishDate,
+      'topicsList': topicsList.map((v) => v.toJson()).toList(),
+      'episodesList': episodesList.map((v) => v.toJson()).toList(),
+      'subscribesList': subscribesList.map((v) => v.toJson()).toList(),
+      'favoritesList': favoritesList.map((v) => v.toJson()).toList(),
+      'imageUrl': imageUrl,
+    };
+  }
+
+  Map<String, dynamic> toJsonNoId() {
+    return {
+      'title': title,
+      'description': description,
+      'host': host,
       'publishDate': publishDate,
       'topicsList': topicsList.map((v) => v.toJson()).toList(),
       'episodesList': episodesList.map((v) => v.toJson()).toList(),

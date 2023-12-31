@@ -5,6 +5,8 @@ import 'package:poca/configs/constants.dart';
 import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/features/blocs/podcast_cubit.dart';
 import 'package:poca/features/blocs/user_cubit.dart';
+import 'package:poca/features/comment/list_comment.dart';
+import 'package:poca/features/podcast/podcast_recommend.dart';
 import 'package:poca/features/podcast/row_info_podcast.dart';
 import 'package:poca/models/podcast.dart';
 import 'package:poca/models/user_model.dart';
@@ -164,8 +166,35 @@ class PodcastDetailView extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(
+                        height: 20,
+                      ),
+                       Divider(
+                        thickness: 1,
+                        height: 2,
+                        endIndent: 20,
+                        indent: 20,
+                        color: Colors.grey.shade600,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10
+                        ),
+                        child: Text('People think?', style: TextStyle(color: textColor,fontSize: Resizable.font(context, 20) , fontWeight: FontWeight.bold),),
+                      ),
+                      ListComment(podcast: podcast),
+                      Divider(
+                        thickness: 1,
+                        height: 2,
+                        endIndent: 20,
+                        indent: 20,
+                        color: Colors.grey.shade600,
+                      ),
+                      RecommendPodcast(podcast: podcast,),
+                      const SizedBox(
                         height: 100,
-                      )
+                      ),
+
                     ],
                   ),
                 )

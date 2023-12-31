@@ -33,4 +33,23 @@ class CloudService {
       return '';
     }
   }
+  Future<String> uploadMp3(File audioFile, String audioPath) async {
+    try {
+      Reference storageReference = _storage.ref('poca/audio/$audioPath.mp3');
+
+      UploadTask uploadTask = storageReference.putFile(audioFile , SettableMetadata( contentType: 'audio/mpeg'),);
+
+      await uploadTask.whenComplete(() => null);
+
+      String downloadURL = await storageReference.getDownloadURL(
+
+      );
+
+      return downloadURL;
+    } catch (e) {
+      print("Error uploading MP3 file: $e");
+      return '';
+    }
+  }
+
 }

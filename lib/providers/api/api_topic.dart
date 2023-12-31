@@ -26,4 +26,36 @@ class ApiTopic {
       return [];
     }
   }
+
+  Future<bool> createTopic(Map<String , dynamic> data) async {
+    var response = await ApiProvider().post('/topics',data: data);
+    if (response == null) return false;
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> deleteTopic(String idTopic) async {
+    var response = await ApiProvider().delete('/topics/$idTopic');
+    if (response == null) return false;
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  Future<bool> updateTopic(String idTopic , Map<String , dynamic> data) async {
+    var response = await ApiProvider().update('/topics/$idTopic' , data: data);
+    if (response == null) return false;
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

@@ -11,6 +11,7 @@ class EmptyComment extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(
         vertical: Resizable.padding(context, 20),
+        horizontal: Resizable.padding(context, 20),
       ),
       padding: EdgeInsets.symmetric(
         vertical: Resizable.padding(context, 20),
@@ -23,7 +24,7 @@ class EmptyComment extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image.asset('assets/icons/ic_chat_empty.png', height: 70,),
-          Text('Chưa có đánh giá nào' , style: TextStyle(
+          Text('No comments' , style: TextStyle(
             color: purpleColor,
             fontWeight: FontWeight.bold,
             fontSize: Resizable.font(context, 13),

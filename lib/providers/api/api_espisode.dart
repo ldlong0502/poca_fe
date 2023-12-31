@@ -27,7 +27,18 @@ class ApiEpisode {
       return null;
     }
   }
+  Future<Episode?> createEpisode(String idPodcast , Map<String, dynamic> data) async {
+    var response = await ApiProvider().post('/podcasts/$idPodcast/episodes', data: data);
+    debugPrint(response.toString());
+    if(response == null) return null;
 
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      return Episode.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
   Future<bool> increaseListens(String podcastId, String episodeId) async {
     var response = await ApiProvider().update('/podcasts/$podcastId/increment-listens/$episodeId');
     debugPrint(response.toString());
@@ -65,6 +76,41 @@ class ApiEpisode {
       return Episode.fromJson(response.data);
     } else {
       return null;
+    }
+  }
+  Future<List<Episode>> getAllEpisode() async {
+    var response = await ApiProvider().get('/podcasts/all-episodes' );
+    if(response == null) return [];
+
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      List<Episode> data =
+      (response.data as List).map((e) => Episode.fromJson(e)).toList();
+      return data;
+    } else {
+      return [];
+    }
+  }
+
+  Future<bool> deleteEpisode(String id ) async {
+    var response = await ApiProvider().delete('/podcasts/episodes/$id');
+    if(response == null) return false;
+
+    if(response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> updateEpisode(String id , Map<String ,dynamic> data ) async {
+    var response = await ApiProvider().update('/podcasts/episodes/$id', data: data);
+    if(response == null) return false;
+
+    if(response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
     }
   }
 

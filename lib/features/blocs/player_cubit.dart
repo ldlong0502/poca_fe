@@ -20,6 +20,7 @@ import 'package:poca/utils/custom_toast.dart';
 class PlayerCubit extends Cubit<int> {
   PlayerCubit(this.context) : super(0);
   final BuildContext context;
+
   bool isMiniPlayer = true;
   bool isHideBottomNavigator = false;
   double speed = 1;
@@ -142,7 +143,10 @@ class PlayerCubit extends Cubit<int> {
   updateHistory() async {
     if(currentPodcast != null) {
       await HistoryService.instance.updateNewHistory(currentPodcast!, indexChapter, durationState.progress.inMilliseconds);
-      AppConfigs.contextApp!.read<RecentlyPlayCubit>().load();
+      var context = AppConfigs.contextApp!;
+      if(context.mounted) {
+        context.read<RecentlyPlayCubit>().load();
+      }
     }
   }
   onSeek(Duration duration) async {

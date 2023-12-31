@@ -1,29 +1,32 @@
 class Comment {
-  final int bookId;
-  final int userId;
+  final String podcastId;
+  final String userId;
   final double rate;
-  final int time;
-  final String type;
+  final int createdAt;
   final String content;
-  final String title;
   Comment({
-    required this.bookId,
+    required this.podcastId,
     required this.userId,
     required this.rate,
-    required this.time,
-    required this.type,
     required this.content,
-    required this.title,
+    required this.createdAt,
   });
 
   factory Comment.fromJson(Map<dynamic, dynamic> json) {
     return Comment(
-        bookId: json['book_id'],
-        userId: json['user_id'],
-        rate: double.parse(json['rate'].toString()),
-        time: json['time'],
-        type: json['type'],
-        content: json['content'],
-        title: json['title']);
+      podcastId: json['podcastId'] ?? '',
+      userId: json['userId'] ?? '',
+      rate: double.parse(json['rate'].toString()),
+      createdAt: json['createdAt'],
+      content: json['content'],);
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'podcastId': podcastId,
+      'userId': userId,
+      'rate': rate,
+      'content': content,
+      'createdAt': createdAt,
+    };
   }
 }

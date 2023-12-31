@@ -10,10 +10,28 @@ class ShimmerLoadingComment extends StatelessWidget {
     return Shimmer.fromColors(
         baseColor: Colors.grey[100]!,
         highlightColor: Colors.grey[300]!,
-        child: Container(
-          height: Resizable.size(context, 150),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20)
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              const SizedBox(height: 20,),
+              Container(
+                height: Resizable.size(context, 80),
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(20)
+                ),
+              ),
+              const SizedBox(height: 20,),
+              Container(
+                height: Resizable.size(context, 80),
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(20)
+                ),
+              ),
+              const SizedBox(height: 20,),
+            ],
           ),
         ));
   }

@@ -3,14 +3,13 @@ import 'package:intl/intl.dart';
 class ConvertUtils {
   static String convertIntToDateTime(int time) {
 
-    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(time);
+    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(time.toString().length == 16 ? time ~/ 1000 : time);
 
     return DateFormat('dd/MM/yy HH:mm').format(dateTime);
   }
 
   static String convertIntToDateString(int time) {
-
-    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(time);
+    final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(time.toString().length == 16 ? time ~/ 1000 : time);
 
     String formattedDate = "${dateTime.day}, ${getMonthName(dateTime.month)} ${dateTime.year}";
     return formattedDate;

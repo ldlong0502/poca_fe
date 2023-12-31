@@ -26,4 +26,40 @@ class ApiUser {
       return false;
     }
   }
+
+  Future<bool> deleteUser(String idUser) async {
+    var response = await ApiProvider().delete('/users/$idUser');
+    if (response == null) return false;
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<UserModel?> getUserById(String idUser) async {
+    var response = await ApiProvider().get('/users/$idUser');
+    if (response == null) return null;
+
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<UserModel>> getAllUsers() async {
+    var response = await ApiProvider().get('/users');
+    if(response == null) return [];
+
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      List<UserModel> podcasts =
+      (response.data as List).map((e) => UserModel.fromJson(e)).toList();
+      return podcasts;
+    } else {
+      return [];
+    }
+  }
 }

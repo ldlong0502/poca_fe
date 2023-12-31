@@ -25,7 +25,27 @@ class ApiPodcast {
       return null;
     }
   }
+  Future<Podcast?> createPodcast(Map<String, dynamic> data) async {
+    var response = await ApiProvider().post('/podcasts', data: data);
+    if(response == null) return null;
 
+    if(response.statusCode == 200) {
+      return Podcast.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<Podcast?> updatePodcast(String id, Map<String, dynamic> data) async {
+    var response = await ApiProvider().update('/podcasts/$id', data: data);
+    if(response == null) return null;
+
+    if(response.statusCode == 200) {
+      return Podcast.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
   Future<Podcast?> getPodcastById(String id) async {
     var response = await ApiProvider().get('/podcasts/$id');
     if(response == null) return null;
@@ -51,6 +71,32 @@ class ApiPodcast {
     }
   }
 
+  Future<List<Podcast>> getAllPodcasts() async {
+    var response = await ApiProvider().get('/podcasts');
+    if(response == null) return [];
+
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      List<Podcast> podcasts =
+      (response.data as List).map((e) => Podcast.fromJson(e)).toList();
+      return podcasts;
+    } else {
+      return [];
+    }
+  }
+  Future<List<Podcast>> getListPodcastByChannelId(String id) async {
+    var response = await ApiProvider().get('/podcasts/findByChannel/$id');
+    if(response == null) return [];
+
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      List<Podcast> podcasts =
+      (response.data as List).map((e) => Podcast.fromJson(e)).toList();
+      return podcasts;
+    } else {
+      return [];
+    }
+  }
   Future<List<Podcast>> searchPodcast(String text) async {
     var response = await ApiProvider().get('/podcasts/search?keyword=$text');
     if(response == null) return [];
@@ -88,6 +134,17 @@ class ApiPodcast {
       return false;
     }
   }
+
+  Future<bool> removePodcast(String idPodcast) async {
+    var response = await ApiProvider().delete('/podcasts/$idPodcast');
+    if(response == null) return false;
+
+    if(response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   Future<bool> addOrRemoveUserSubscribe(String idPodcast, String idUser , String type ) async {
     var response = await ApiProvider().post('/podcasts/$idPodcast/$type-subscribe/$idUser');
     if(response == null) return false;
@@ -98,6 +155,15 @@ class ApiPodcast {
       return false;
     }
   }
+  Future<bool> deletePodcast(String idPodcast ) async {
+    var response = await ApiProvider().delete('/podcasts/$idPodcast');
+    if(response == null) return false;
 
+    if(response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 }

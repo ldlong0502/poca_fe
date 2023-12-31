@@ -11,6 +11,7 @@ import 'package:poca/configs/constants.dart';
 import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/screens/explore_screen.dart';
 import 'package:lifecycle/lifecycle.dart';
+import 'package:poca/features/channel/your_channel_screen.dart';
 import '../utils/resizable.dart';
 import '../widgets/custom_mini_player.dart';
 import 'account_screen.dart';
@@ -74,8 +75,8 @@ class _MainScreenState extends State<MainScreen> with  LifecycleAware, Lifecycle
           inactiveColorPrimary: purpleColor,
         ),
         PersistentBottomNavBarItem(
-          icon:  Image.asset('assets/icons/ic_setting_fill.png' , color: purpleColor,),
-          inactiveIcon:  Image.asset('assets/icons/ic_setting.png' , color: purpleColor,),
+          icon:  Image.asset('assets/icons/ic_setting_fill.png' , color: purpleColor, scale: 1.2,),
+          inactiveIcon:  Image.asset('assets/icons/ic_setting.png' , color: purpleColor, scale: 1.2,),
           title: ("Settings"),
           activeColorPrimary: purpleColor,
           inactiveColorPrimary: purpleColor,

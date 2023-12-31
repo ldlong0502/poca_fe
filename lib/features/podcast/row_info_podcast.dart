@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/configs/constants.dart';
 import 'package:poca/features/blocs/podcast_cubit.dart';
 import 'package:poca/models/podcast.dart';
+import 'package:poca/routes/app_routes.dart';
+import 'package:poca/screens/channel_screen.dart';
+import 'package:poca/utils/navigator_custom.dart';
 import 'package:poca/utils/resizable.dart';
 
+import '../../models/channel_model.dart';
 import '../../widgets/network_image_custom.dart';
+import '../blocs/channel_cubit.dart';
 
 class RowInfoPodcast extends StatelessWidget {
   const RowInfoPodcast({super.key, required this.podcastCubit});
@@ -38,14 +44,37 @@ class RowInfoPodcast extends StatelessWidget {
                     fontSize: Resizable.font(context, 24),
                     fontWeight: FontWeight.w800),
               ),
-              Text(
-                podcast.host,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: secondaryColor,
-                    fontSize: Resizable.font(context, 20),
-                    fontWeight: FontWeight.w600),
+              BlocProvider(
+                create: (context) => ChannelCubit(podcast.host),
+                child: BlocBuilder<ChannelCubit, ChannelModel?>(
+                  builder: (context, state) {
+                    if(state ==  null) {
+                      return const Text('');
+                    }
+                    return InkWell(
+                      onTap: () {
+                        NavigatorCustom.pushNewScreen(context, ChannelScreen(channel: state), AppRoutes.channel);
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              state.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: secondaryColor,
+                                  fontSize: Resizable.font(context, 20),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Icon(Icons.navigate_next)
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,

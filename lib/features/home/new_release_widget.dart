@@ -4,10 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/configs/constants.dart';
 import 'package:poca/features/blocs/home_cubit.dart';
 import 'package:poca/features/blocs/player_cubit.dart';
+import 'package:poca/models/channel_model.dart';
+import 'package:poca/providers/api/api_channel.dart';
 import 'package:poca/utils/convert_utils.dart';
 import 'package:poca/utils/resizable.dart';
 
 import '../../widgets/network_image_custom.dart';
+import '../blocs/channel_cubit.dart';
 
 class NewReleaseWidget extends StatelessWidget {
   const NewReleaseWidget({super.key, required this.homeCubit});
@@ -49,13 +52,24 @@ class NewReleaseWidget extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5.0),
-                    child: Text(
-                      podcast.host,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: Resizable.font(context, 20),
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                    child: BlocProvider(
+                      create: (context) => ChannelCubit(podcast.host),
+                      child: BlocBuilder<ChannelCubit, ChannelModel?>(
+                        builder: (context, state) {
+                          if(state ==  null) {
+                            return const Text('');
+                          }
+                          return Text(
+                            state.name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: TextStyle(
+                                fontSize: Resizable.font(context, 20),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

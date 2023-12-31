@@ -17,8 +17,13 @@ class HistoryService {
   updateNewHistory(Podcast podcast, int indexChapter, int duration) async {
     var listHistory =
         await HistoryPodcastProvider.instance.getListHistoryPodcast();
+    for(var item in listHistory) {
+      print('=>>>>>' + item.podcast.id);
+    }
     final index =
         listHistory.map((e) => e.podcast.id).toList().indexOf(podcast.id);
+    print('=>>>>>index' + podcast.id);
+    print('=>>>>>index' + index.toString());
     if (index != -1) {
       listHistory.removeAt(index);
     }

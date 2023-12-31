@@ -9,6 +9,7 @@ class DioInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final token = await PreferenceProvider.instance.getString('access_token');
+    print('allo: $token');
     if (token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
       debugPrint(token);

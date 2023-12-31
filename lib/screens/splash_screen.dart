@@ -51,9 +51,17 @@ class SplashScreen extends StatelessWidget {
         UserProvider.instance.setUser(model);
         if (context.mounted) {
           context.read<UserCubit>().update(model);
-          Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-              AppRoutes.main, (route) => false,
-              arguments: {'isLogin': true});
+          var user = context.read<UserCubit>().state!;
+          if(user.isAdmin) {
+            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+                AppRoutes.adminHome, (route) => false,
+                arguments: {'isLogin': true});
+          }
+         else {
+            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+                AppRoutes.main, (route) => false,
+                arguments: {'isLogin': true});
+          }
         }
       }
 

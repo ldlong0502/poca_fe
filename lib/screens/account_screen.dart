@@ -3,10 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/features/account/edit_account.dart';
 import 'package:poca/features/account/none_account_view.dart';
 import 'package:poca/features/blocs/user_cubit.dart';
+import 'package:poca/features/dialogs/normal_dialog.dart';
 import 'package:poca/models/user_model.dart';
+import 'package:poca/providers/api/api_channel.dart';
 import 'package:poca/routes/app_routes.dart';
 import 'package:poca/screens/base_screen.dart';
+import 'package:poca/screens/channel_screen.dart';
 import 'package:poca/screens/playlist_screen.dart';
+import 'package:poca/features/channel/your_channel_screen.dart';
 import 'package:poca/utils/dialogs.dart';
 import 'package:poca/utils/navigator_custom.dart';
 import 'package:poca/utils/resizable.dart';
@@ -40,13 +44,44 @@ class AccountScreen extends StatelessWidget {
         'showIcon': true,
         'onClick': () {
           print('++++++++ click');
-          NavigatorCustom.pushNewScreen(context, const PlaylistScreen(), AppRoutes.playlist);
+          NavigatorCustom.pushNewScreen(
+              context, const PlaylistScreen(), AppRoutes.playlist);
         },
       },
       {
-        'title': 'Audio Quality',
+        'title': 'Your Channel',
         'showIcon': true,
-        'onClick': () {},
+        'onClick': () async {
+          final user = context.read<UserCubit>();
+          final channel =
+              await ApiChannel.instance.getChannelByUser(user.state!.id);
+          if (channel == null) {
+            if (context.mounted) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return NormalDialog(
+                        onYes: () {
+                          if(context.mounted) {
+                            Navigator.pop(context);
+                            NavigatorCustom.pushNewScreen(context, const CreateYourChannelScreen(), '/yourChannel');
+                          }
+                        },
+                        onCancel: (){
+                          Navigator.pop(context);
+                        },
+                        title: 'Don\'t have any Channels?',
+                        content: 'Do you want to create new channel?');
+                  });
+            }
+
+          }
+          else {
+            if(context.mounted) {
+              NavigatorCustom.pushNewScreen(context,  ChannelScreen(channel: channel!), AppRoutes.channel);
+            }
+          }
+        },
       },
       {
         'title': 'Storage',
@@ -79,8 +114,8 @@ class AccountScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: BlocBuilder<UserCubit, UserModel?>(
           builder: (context, state) {
-            if(state == null) return const NoneAccountView();
-            return  Column(
+            if (state == null) return const NoneAccountView();
+            return Column(
               children: [
                 const SizedBox(
                   height: 20,
@@ -98,37 +133,39 @@ class AccountScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                     child: Text(
-                                      e['title'] as String,
-                                      style: TextStyle(
-                                          fontSize: Resizable.font(context, 20),
-                                          color: textColor,
-                                          fontWeight: FontWeight.w600),
-                                    )),
+                                  e['title'] as String,
+                                  style: TextStyle(
+                                      fontSize: Resizable.font(context, 20),
+                                      color: textColor,
+                                      fontWeight: FontWeight.w600),
+                                )),
                                 SizedBox(
                                   width: Resizable.size(context, 50),
                                   child: !(e['showIcon'] as bool)
                                       ? null
                                       : IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: secondaryColor,
-                                    ),
-                                  ),
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: secondaryColor,
+                                          ),
+                                        ),
                                 )
                               ],
                             ),
                           ),
                         );
                       }).toList(),
-                      const SizedBox(height: 20,),
-                      CustomButton(title: 'Log out',
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomButton(
+                          title: 'Log out',
                           onTap: () {
                             ApiAuthentication.instance.logOut(context);
                           },
                           backgroundColor: primaryColor,
                           textColor: Colors.white),
-
                     ],
                   ),
                 )

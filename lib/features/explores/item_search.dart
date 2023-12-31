@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/models/podcast.dart';
 import 'package:poca/utils/resizable.dart';
 import 'package:poca/widgets/network_image_custom.dart';
 
 import '../../configs/constants.dart';
+import '../../models/channel_model.dart';
+import '../../providers/api/api_channel.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/navigator_custom.dart';
+import '../blocs/channel_cubit.dart';
 import '../podcast/podcast_detail_view.dart';
 
 class ItemSearch extends StatelessWidget {
@@ -38,41 +42,52 @@ class ItemSearch extends StatelessWidget {
             ),
             Expanded(
                 child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  podcast.title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: Resizable.font(context, 18),
-                      color: textColor,
-                      fontWeight: FontWeight.w800),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  podcast.host,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
-                      fontSize: Resizable.font(context, 14),
-                      color: Colors.grey.shade400,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            )),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      podcast.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: Resizable.font(context, 18),
+                          color: textColor,
+                          fontWeight: FontWeight.w800),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    BlocProvider(
+                      create: (context) => ChannelCubit(podcast.host),
+                      child: BlocBuilder<ChannelCubit, ChannelModel?>(
+                        builder: (context, state) {
+                          if(state ==  null) {
+                            return const Text('');
+                          }
+                          return Text(
+                            state.name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: TextStyle(
+                                fontSize: Resizable.font(context, 14),
+                                color: Colors.grey.shade400,
+                                fontWeight: FontWeight.w600),
+                          );
+                        },
+                      ),
+                    )
+
+                  ],
+                )),
             SizedBox(
               width: Resizable.size(context, 50),
               child: isHistory
                   ? IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.clear_rounded,
-                        color: secondaryColor,
-                      ))
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.clear_rounded,
+                    color: secondaryColor,
+                  ))
                   : null,
             )
           ],

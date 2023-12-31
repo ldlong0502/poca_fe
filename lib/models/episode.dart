@@ -68,15 +68,12 @@ class Episode {
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
       'title': title,
       'description': description,
       'duration': duration,
       'audioFile': audioFile,
       'publishDate': publishDate,
-      'listens': listens,
-      'favoritesList': favoritesList.map((v) => v.toJson()).toList(),
-      'imageUrl': imageUrl,
+      'imageUrl': imageUrl
     };
   }
 }
