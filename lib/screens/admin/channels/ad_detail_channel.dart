@@ -107,12 +107,16 @@ class AdminDetailChannel extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            Text(
-              channel.name,
-              style: TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Resizable.font(context, 20)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                channel.name,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Resizable.font(context, 20)),
+              ),
             ),
             const SizedBox(
               height: 10,

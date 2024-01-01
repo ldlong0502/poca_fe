@@ -61,6 +61,8 @@ class DownloadService {
   }
 
   removeItem(EpisodeDownLoad item) async {
+
+
     var listDown = await getListEpisodeDownLoad();
     final index = listDown.map((e) => e.item.id).toList().indexOf(item.item.id);
     if (index != -1) {
@@ -71,7 +73,8 @@ class DownloadService {
     var idUser = user == null ? 'local' : user.id;
     await PreferenceProvider.instance
         .setString(idUser + AppConfigs.KEY_DOWNLOAD_EPISODE, json);
-    File(item.path).deleteSync();
+
+   await  File(item.path).delete();
   }
 
 }

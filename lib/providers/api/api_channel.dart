@@ -42,7 +42,12 @@ class ApiChannel {
     }
   }
   Future<bool> addOrRemoveUserSubscribe(String idChannel, String idUser , String type ) async {
+    print(idChannel);
+    print(idUser);
+    print(type);
     var response = await ApiProvider().post('/channel/$idChannel/$type-subscribe/$idUser');
+
+    print(response);
     if(response == null) return false;
 
     if(response.statusCode == 200) {

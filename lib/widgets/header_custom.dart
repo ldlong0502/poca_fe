@@ -44,18 +44,18 @@ class HeaderCustom extends StatelessWidget {
               if(user == null) return Container();
               return Row(
                 children: [
-                  Stack(
-                    children: [
-                      const Icon(Icons.notifications_none_outlined, color: primaryColor, size: 40,),
-                      Positioned(
-                          top: 6,
-                          right: 5,
-                          child:  Container(
-                              padding: const EdgeInsets.all(2),
-                              decoration: const BoxDecoration(color: Colors.white , shape: BoxShape.circle),
-                              child: const Badge(smallSize: 10,)))
-                    ],
-                  ),
+                  // Stack(
+                  //   children: [
+                  //     const Icon(Icons.notifications_none_outlined, color: primaryColor, size: 40,),
+                  //     Positioned(
+                  //         top: 6,
+                  //         right: 5,
+                  //         child:  Container(
+                  //             padding: const EdgeInsets.all(2),
+                  //             decoration: const BoxDecoration(color: Colors.white , shape: BoxShape.circle),
+                  //             child: const Badge(smallSize: 10,)))
+                  //   ],
+                  // ),
                   const SizedBox(width: 5,),
                   InkWell(
                     onTap: () {

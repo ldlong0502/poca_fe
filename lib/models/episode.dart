@@ -68,6 +68,7 @@ class Episode {
 
   Map<String, dynamic> toJson() {
     return {
+      '_id': id,
       'title': title,
       'description': description,
       'duration': duration,
