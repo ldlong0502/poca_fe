@@ -81,4 +81,17 @@ class ApiAuthentication {
       return false;
     }
   }
+
+  Future<String?> resetPass(String username) async {
+    var response = await ApiProvider().post('/password-reset', data:  {
+      'username': username,
+    });
+    if(response == null) return null;
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      return response.data['email'];
+    } else {
+      return null;
+    }
+  }
 }

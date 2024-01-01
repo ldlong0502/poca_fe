@@ -6,7 +6,10 @@ import 'package:poca/features/blocs/home_cubit.dart';
 import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/models/channel_model.dart';
 import 'package:poca/providers/api/api_channel.dart';
+import 'package:poca/routes/app_routes.dart';
+import 'package:poca/screens/channel_screen.dart';
 import 'package:poca/utils/convert_utils.dart';
+import 'package:poca/utils/navigator_custom.dart';
 import 'package:poca/utils/resizable.dart';
 
 import '../../widgets/network_image_custom.dart';
@@ -59,14 +62,19 @@ class NewReleaseWidget extends StatelessWidget {
                           if(state ==  null) {
                             return const Text('');
                           }
-                          return Text(
-                            state.name,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle(
-                                fontSize: Resizable.font(context, 20),
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                          return InkWell(
+                            onTap: (){
+                              NavigatorCustom.pushNewScreen(context, ChannelScreen(channel: state!), AppRoutes.channel);
+                            },
+                            child: Text(
+                              state.name,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  fontSize: Resizable.font(context, 20),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           );
                         },
                       ),
@@ -169,14 +177,6 @@ class NewReleaseWidget extends StatelessWidget {
                               mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                               children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.add_circle_outline,
-                                    color: Colors.white,
-                                    size: Resizable.size(context, 35),
-                                  ),
-                                ),
                                 InkWell(
                                   onTap: () {
                                     var index = podcast.episodesList

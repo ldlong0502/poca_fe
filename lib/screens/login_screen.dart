@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () async {
-                            CustomToast.showBottomToast(context, 'Welcome to Poca');
+                            Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.forgotPass);
                           },
                           style: ButtonStyle(
                               padding:

@@ -13,6 +13,7 @@ import 'package:poca/screens/admin/podcasts/admin_detail_podcast.dart';
 import 'package:poca/screens/admin/topics/admin_detail_topic.dart';
 import 'package:poca/screens/admin/users/admin_detail_user.dart';
 import 'package:poca/screens/admin/users/create_user_view.dart';
+import 'package:poca/screens/forgot_password_screen.dart';
 import 'package:poca/screens/home_screen.dart';
 import 'package:poca/screens/login_screen.dart';
 import 'package:poca/screens/main_screen.dart';
@@ -28,6 +29,7 @@ class AppRoutes {
   static const splash = '/';
   static const home = '/home';
   static const main = '/main';
+  static const forgotPass = '/forgotPass';
   static const audioBookDetail = '/audioBookDetail';
   static const onBoarding = '/onBoarding';
   static const login = '/login';
@@ -67,6 +69,9 @@ class AppRoutes {
       case AppRoutes.splash:
         return MaterialPageRoute(
             builder: (context) => const SplashScreen(), settings: settings);
+      case AppRoutes.forgotPass:
+        return MaterialPageRoute(
+            builder: (context) => const ForgotPasswordScreen(), settings: settings);
       case AppRoutes.main:
         final map = settings.arguments as Map;
         return MaterialPageRoute(
