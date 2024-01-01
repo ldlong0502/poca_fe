@@ -22,6 +22,8 @@ class ApiAuthentication {
     if(response == null) return false;
     if(response.statusCode == 200) {
       debugPrint(response.toString());
+      await PreferenceProvider.instance.setString('username', username);
+      await PreferenceProvider.instance.setString('password', password);
       await PreferenceProvider.instance.setString('access_token', response.data['accessToken']);
       await PreferenceProvider.instance.setString('refresh_token', response.data['refreshToken']);
       await PreferenceProvider.instance.saveJsonToPrefs(response.data['data'] , 'user');
@@ -51,6 +53,8 @@ class ApiAuthentication {
   }
 
   Future<bool> logOut(BuildContext context) async {
+    await PreferenceProvider.instance.removeJsonToPref('username');
+    await PreferenceProvider.instance.removeJsonToPref('password');
     await PreferenceProvider.instance.removeJsonToPref('access_token');
     await PreferenceProvider.instance.removeJsonToPref('refresh_token');
     await PreferenceProvider.instance.removeJsonToPref('user');
@@ -64,5 +68,17 @@ class ApiAuthentication {
 
   }
 
-
+  Future<bool> changePass(String id, String newPass) async {
+    var response = await ApiProvider().post('/auth/change-password/$id', data:  {
+      'newPassword': newPass,
+    });
+    if(response == null) return false;
+    if(response.statusCode == 200) {
+      debugPrint(response.toString());
+      await PreferenceProvider.instance.setString('password', newPass);
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

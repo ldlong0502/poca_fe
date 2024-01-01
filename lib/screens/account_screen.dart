@@ -8,6 +8,7 @@ import 'package:poca/models/user_model.dart';
 import 'package:poca/providers/api/api_channel.dart';
 import 'package:poca/routes/app_routes.dart';
 import 'package:poca/screens/base_screen.dart';
+import 'package:poca/screens/change_pass_screen.dart';
 import 'package:poca/screens/channel_screen.dart';
 import 'package:poca/screens/library_screen.dart';
 import 'package:poca/screens/playlist_screen.dart';
@@ -100,7 +101,10 @@ class AccountScreen extends StatelessWidget {
       {
         'title': 'Change Password',
         'showIcon': true,
-        'onClick': () {},
+        'onClick': () {
+          NavigatorCustom.pushNewScreen(
+              context, const ChangePasswordScreen(), '/changePass');
+        },
       },
       {
         'title': 'About',
