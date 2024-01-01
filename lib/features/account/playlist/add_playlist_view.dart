@@ -201,4 +201,15 @@ class AddPlaylistCubit extends Cubit<int> {
     isCreating = value;
     emit(state + 1);
   }
+  
+  load() async {
+    final listTopics = await ApiTopic.instance.getListTopics();
+    List<Topic> temp = [];
+    for (var item in topics) {
+      final topic = listTopics.firstWhere((element) => element.id == item);
+      temp.add(topic);
+    }
+
+    emit(temp);
+  }
 }

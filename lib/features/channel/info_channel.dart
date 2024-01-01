@@ -58,6 +58,65 @@ class InfoChannel extends StatelessWidget {
               ),),
             ],
           ),
+          Row(
+            children: [
+              Text('Region: ', style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Resizable.font(context, 18)
+              ),),
+              Text(cubit.channel!.info['region'], style: TextStyle(
+                  color: primaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: Resizable.font(context, 16)
+              ),),
+            ],
+          ),
+          const SizedBox(height: 10,),
+          Row(
+            children: [
+              Text('Region: ', style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Resizable.font(context, 18)
+              ),),
+              Text(cubit.channel!.info['nation'], style: TextStyle(
+                  color: primaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: Resizable.font(context, 16)
+              ),),
+            ],
+          ),
+          const SizedBox(height: 10,),
+           Row(
+            children: [
+              Text('Tag: ', style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Resizable.font(context, 18)
+              ),),
+              Text(cubit.channel!.info['tag'], style: TextStyle(
+                  color: primaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: Resizable.font(context, 16)
+              ),),
+            ],
+          ),
+          const SizedBox(height: 10,),
+          Row(
+            children: [
+              Text('URL: ', style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Resizable.font(context, 18)
+              ),),
+              Text(cubit.channel!.info['url'], style: TextStyle(
+                  color: primaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: Resizable.font(context, 16)
+              ),),
+            ],
+          ),
           const SizedBox(height: 10,),
           Row(
             children: [
