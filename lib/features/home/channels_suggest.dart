@@ -1,18 +1,18 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:poca/features/blocs/home_cubit.dart';
 import 'package:poca/features/home/title_see_all.dart';
-import 'package:poca/widgets/network_image_custom.dart';
+import 'package:poca/screens/channel_screen.dart';
+import 'package:poca/screens/channel_see_all.dart';
 
 import '../../configs/constants.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/navigator_custom.dart';
 import '../../utils/resizable.dart';
-import '../blocs/player_cubit.dart';
-import '../topics/topic_detail_view.dart';
+import '../../widgets/network_image_custom.dart';
+import '../blocs/home_cubit.dart';
 
-class TopicSuggest extends StatelessWidget {
-  const TopicSuggest({super.key, required this.homeCubit});
+class ChannelsSuggest extends StatelessWidget {
+  const ChannelsSuggest({super.key, required this.homeCubit});
 
   final HomeCubit homeCubit;
 
@@ -21,29 +21,28 @@ class TopicSuggest extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleSeeAll(title: 'Suggest topics', onSeeAll: () {
-          final cubit = context.read<PlayerCubit>();
-          cubit.persistentTabController.jumpToTab(1);
+        TitleSeeAll(title: 'Best Channels', onSeeAll: () {
+          NavigatorCustom.pushNewScreen(context, ChannelSeeAll( title: "Channels"), '/channel_all');
         }),
         SizedBox(
           height: 220,
           child: ListView(
             shrinkWrap: true,
             padding: const EdgeInsets.only(
-              left: 20,
-              top: 10
+                left: 20,
+                top: 10
             ),
             scrollDirection: Axis.horizontal,
-            children: homeCubit.listTopics.take(5).map((e) {
+            children: homeCubit.listChannels.take(5).map((e) {
               return Padding(
                 padding: const EdgeInsets.only(right: 10.0),
                 child: GestureDetector(
                   onTap: (){
                     NavigatorCustom.pushNewScreen(
                         context,
-                        TopicDetailView(
-                            topic: e),
-                        AppRoutes.topicDetail);
+                        ChannelScreen(
+                            channel: e),
+                        AppRoutes.channel);
                   },
                   child: SizedBox(
                     width: Resizable.size(context, 150),

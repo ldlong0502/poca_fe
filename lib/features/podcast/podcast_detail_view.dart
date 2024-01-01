@@ -131,31 +131,6 @@ class PodcastDetailView extends StatelessWidget {
                                                         fontWeight:
                                                             FontWeight.w600),
                                                   ),
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Text(
-                                                        e.favoritesList.length
-                                                            .toString(),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                Resizable.font(
-                                                                    context,
-                                                                    13),
-                                                            color: primaryColor,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
-                                                      ),
-                                                      const Icon(
-                                                        Icons.favorite,
-                                                        color: primaryColor,
-                                                      )
-                                                    ],
-                                                  ),
                                                   InkWell(
                                                       onTap: () async {
                                                         if(context.read<UserCubit>().state == null) {

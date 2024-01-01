@@ -10,17 +10,16 @@ class DynamicLinksService {
   static DynamicLinksService get instance => _instance;
 
   Future<String> createLink(String ref) async {
-    final url = "https://pocasedemo.page.link/$ref";
+    final url = "https://pocatest.page.link/$ref";
     final dynamicLinkParams = DynamicLinkParameters(
       link: Uri.parse(url),
-      uriPrefix: "https://pocasedemo.page.link",
-      androidParameters: const AndroidParameters(packageName: "com.example.poca" , minimumVersion: 20),
-      iosParameters: const IOSParameters(bundleId: "com.example.poca"),
+      uriPrefix: "https://pocatest.page.link",
+      androidParameters: const AndroidParameters(packageName: "com.example.poca" , minimumVersion: 0),
     );
     final dynamicLink =
-    await FirebaseDynamicLinks.instance.buildShortLink(dynamicLinkParams);
+    await FirebaseDynamicLinks.instance.buildLink(dynamicLinkParams);
 
-    return dynamicLink.shortUrl.toString();
+    return dynamicLink.toString();
   }
   
   

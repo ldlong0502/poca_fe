@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marquee/marquee.dart';
 import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/features/players/sleep_time_bottom_sheet.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:poca/configs/app_configs.dart';
 import 'package:poca/configs/constants.dart';
@@ -16,6 +17,7 @@ import 'package:poca/utils/resizable.dart';
 
 import '../../blocs/mini_player_cubit.dart';
 import '../../screens/audio_book_detail_screen.dart';
+import '../../services/dynamic_links_service.dart';
 import '../../utils/navigator_custom.dart';
 
 class MaxPlayerPodcast extends StatelessWidget {
@@ -184,7 +186,13 @@ class MaxPlayerPodcast extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                DynamicLinksService.instance
+                                    .createLink('episode/${cubit.currentPodcast!
+                                    .episodesList[cubit.indexChapter].id}')
+                                    .then((value) =>
+                                    Share.share(value));
+                              },
                               color: primaryColor,
                               iconSize: Resizable.size(context, 30),
                               icon: const Icon(Icons.ios_share)),
@@ -209,11 +217,6 @@ class MaxPlayerPodcast extends StatelessWidget {
                                   )),
                             ],
                           ),
-                          IconButton(
-                              onPressed: () {},
-                              color: primaryColor,
-                              iconSize: Resizable.size(context, 30),
-                              icon: const Icon(Icons.favorite_border_outlined))
                         ],
                       ),
                     ),

@@ -6,9 +6,11 @@ import 'package:poca/features/blocs/subscribe_cubit.dart';
 import 'package:poca/features/home/subscribe_list.dart';
 import 'package:poca/features/podcast/row_info_podcast.dart';
 import 'package:poca/widgets/custom_button.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../models/user_model.dart';
 import '../../routes/app_routes.dart';
+import '../../services/dynamic_links_service.dart';
 import '../../utils/resizable.dart';
 import '../blocs/player_cubit.dart';
 import '../blocs/user_cubit.dart';
@@ -99,7 +101,12 @@ class AppBarPodcast extends StatelessWidget {
                             },
                           ),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                DynamicLinksService.instance
+                                    .createLink('podcast/${podcastCubit.podcast!.id}')
+                                    .then((value) =>
+                                    Share.share(value));
+                              },
                               icon: const Icon(
                                 Icons.share,
                                 color: primaryColor,

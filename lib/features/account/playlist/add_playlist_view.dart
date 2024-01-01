@@ -125,6 +125,7 @@ class AddPlaylistView extends StatelessWidget {
                                 context, 'Name playlist already existed');
                             return;
                           }
+                          addCubit.updateCreate(true);
                           var url = await CloudService.instance.uploadImage(
                               File(addCubit.image!.path),
                               DateTime.now().millisecondsSinceEpoch.toString());
@@ -136,7 +137,7 @@ class AddPlaylistView extends StatelessWidget {
                             'imageUrl': url,
                           };
                           debugPrint(url);
-                          addCubit.updateCreate(true);
+
                           final res = await ApiPlaylist.instance
                               .addPlaylist(userCubit.state!.id, data);
                           debugPrint(res.toString());

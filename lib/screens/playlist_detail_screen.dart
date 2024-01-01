@@ -23,10 +23,12 @@ import '../configs/constants.dart';
 import '../features/account/playlist/edit_playlist.dart';
 import '../features/blocs/player_cubit.dart';
 import '../models/podcast.dart';
+import '../routes/app_routes.dart';
 import '../utils/convert_utils.dart';
 import '../utils/dialogs.dart';
 import '../utils/resizable.dart';
 import '../widgets/app_bar_custom.dart';
+import '../widgets/download_alert.dart';
 
 class PlaylistDetailScreen extends StatelessWidget {
   const PlaylistDetailScreen(
@@ -300,33 +302,33 @@ class PlaylistDetailScreen extends StatelessWidget {
                                           Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Text(
-                                                e.favoritesList.length
-                                                    .toString(),
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: Resizable.font(
-                                                        context, 13),
-                                                    color: primaryColor,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              const Icon(
-                                                Icons.favorite,
-                                                color: primaryColor,
+                                              InkWell(
+                                                onTap:() async {
+                                                  if(context.read<UserCubit>().state == null) {
+                                                    Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.login);
+                                                    return;
+                                                  }
+
+                                                  await showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      DownloadAlert(
+                                                        episode: e,
+                                                      ));
+                                                },
+                                                child: const Icon(
+                                                  Icons.download_for_offline,
+                                                  color: primaryColor,
+                                                ),
                                               ),
                                             ],
                                           ),
                                           InkWell(
                                               onTap: () {
-                                                try {
-                                                  DynamicLinksService.instance
-                                                      .createLink('episodes')
-                                                      .then((value) =>
-                                                      Share.share(value));
-                                                } catch(err) {
-                                                  Share.share('https://pocademo.page.link/episodes');
-                                                }
+                                                DynamicLinksService.instance
+                                                    .createLink('episode/${e.id}')
+                                                    .then((value) =>
+                                                    Share.share(value));
 
                                               },
                                               child: const Icon(

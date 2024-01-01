@@ -74,14 +74,6 @@ class MoreActionPlaylist extends StatelessWidget {
           }));
         }
       },
-      {
-        'title': 'Download',
-        'icon': const Icon(
-          Icons.download,
-          color: Colors.white,
-        ),
-        'onPress': () {},
-      }
     ];
     return BaseBottomSheet(
       child: SizedBox(

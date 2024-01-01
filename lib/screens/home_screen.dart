@@ -11,6 +11,7 @@ import 'package:poca/widgets/loading_progress.dart';
 
 import '../configs/app_configs.dart';
 import '../features/blocs/home_cubit.dart';
+import '../features/home/channels_suggest.dart';
 import '../features/home/new_release_widget.dart';
 import '../features/home/recently_podcast_view.dart';
 import '../widgets/header_custom.dart';
@@ -38,6 +39,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20,),
                   const SubscribeList(),
                   TopicSuggest(homeCubit: homeCubit),
+                  ChannelsSuggest(homeCubit: homeCubit),
                   NewReleaseWidget(homeCubit: homeCubit,),
                   const SizedBox(height: 20,),
                   const RecentlyPodcastView(),
