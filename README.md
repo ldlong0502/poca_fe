@@ -2,9 +2,9 @@
 
 ## Nhóm
 Tên nhóm: Nhóm 3 - SE405
-19520137 - Trần Linh Khuê Lam
-20521565 - Lữ Đình Long
-20521459 - Phạm Phùng Gia Khiêm
+- 19520137 - Trần Linh Khuê Lam
+- 20521565 - Lữ Đình Long
+- 20521459 - Phạm Phùng Gia Khiêm
 
 
 ## Tên Đề Tài
