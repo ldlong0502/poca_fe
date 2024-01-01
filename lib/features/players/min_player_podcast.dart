@@ -32,7 +32,7 @@ class MinPlayerPodcast extends StatelessWidget {
                         vertical: Resizable.padding(context, 8),
                         horizontal: Resizable.padding(context, 15),
                       ),
-                      child: ClipRRect(
+                      child: cubit.isOnline ? ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: CachedNetworkImage(
                           imageUrl: cubit.currentPodcast!.imageUrl,
@@ -55,7 +55,9 @@ class MinPlayerPodcast extends StatelessWidget {
                             );
                           },
                         ),
-                      ),
+                      ) : ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.asset(cubit.currentPodcast!.imageUrl , height: 45, width: 50, fit: BoxFit.fill,)),
                     )),
                 Expanded(
                     flex: 3,

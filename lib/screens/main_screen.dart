@@ -33,7 +33,7 @@ class _MainScreenState extends State<MainScreen> with  LifecycleAware, Lifecycle
     if(event == LifecycleEvent.push || event == LifecycleEvent.visible || event == LifecycleEvent.active) {
       debugPrint('actice');
     }
-    else {
+    else if( event == LifecycleEvent.pop) {
       if(context.mounted){
         context.read<PlayerCubit>().pause();
       }

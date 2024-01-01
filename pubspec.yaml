@@ -73,6 +73,9 @@ dependencies:
   circular_chart_flutter: ^0.0.2
   pie_chart: ^5.4.0
   fl_chart: ^0.60.0
+  device_info_plus: ^9.1.1
+  permission_handler: ^11.0.1
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:

@@ -9,6 +9,7 @@ import 'package:poca/providers/api/api_channel.dart';
 import 'package:poca/routes/app_routes.dart';
 import 'package:poca/screens/base_screen.dart';
 import 'package:poca/screens/channel_screen.dart';
+import 'package:poca/screens/library_screen.dart';
 import 'package:poca/screens/playlist_screen.dart';
 import 'package:poca/features/channel/your_channel_screen.dart';
 import 'package:poca/utils/dialogs.dart';
@@ -37,7 +38,10 @@ class AccountScreen extends StatelessWidget {
       {
         'title': 'Your library',
         'showIcon': true,
-        'onClick': () {},
+        'onClick': () {
+          NavigatorCustom.pushNewScreen(
+              context, const YourLibrary(), '/library');
+        },
       },
       {
         'title': 'Playlist',
@@ -82,11 +86,6 @@ class AccountScreen extends StatelessWidget {
             }
           }
         },
-      },
-      {
-        'title': 'Storage',
-        'showIcon': true,
-        'onClick': () {},
       },
       {
         'title': 'Private & Social',
@@ -143,9 +142,9 @@ class AccountScreen extends StatelessWidget {
                                   width: Resizable.size(context, 50),
                                   child: !(e['showIcon'] as bool)
                                       ? null
-                                      : IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
+                                      : const IconButton(
+                                          onPressed: null,
+                                          icon: Icon(
                                             Icons.arrow_forward_ios,
                                             color: secondaryColor,
                                           ),

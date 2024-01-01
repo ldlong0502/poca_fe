@@ -4,6 +4,8 @@ import 'package:poca/configs/app_configs.dart';
 import 'package:poca/models/history_podcast.dart';
 import 'package:poca/providers/preference_provider.dart';
 
+import '../../utils/helper_utils.dart';
+
 class HistoryPodcastProvider {
   HistoryPodcastProvider._privateConstructor();
 
@@ -13,7 +15,9 @@ class HistoryPodcastProvider {
 
   final local = PreferenceProvider.instance;
   Future<List<HistoryPodcast>> getListHistoryPodcast() async {
-    var response = await local.getString(AppConfigs.KEY_RECENTLY_PLAYED);
+    var user = (await HelperUtils.checkLogin());
+    var idUser = user == null ? 'local' : user.id;
+    var response = await local.getString( idUser + AppConfigs.KEY_RECENTLY_PLAYED);
 
     if(response.isEmpty) {
       return [];

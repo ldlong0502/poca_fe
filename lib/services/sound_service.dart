@@ -38,7 +38,10 @@ class SoundService {
     var player = await newPlayer();
     return await player.setUrl(url, initialPosition: positionNow);
   }
-
+  Future<Duration?> setFile(String file, [Duration positionNow = Duration.zero]) async {
+    var player = await newPlayer();
+    return await player.setFilePath(file, initialPosition: positionNow);
+  }
   playUrl(String url, [Duration positionNow = Duration.zero]) async {
     var player = await newPlayer();
     await player.setUrl(url, initialPosition: positionNow);

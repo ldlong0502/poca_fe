@@ -9,4 +9,5 @@ class AppConfigs {
 
 
   static const KEY_RECENTLY_PLAYED = 'recently_played';
+  static const KEY_DOWNLOAD_EPISODE =  'episode_download';
 }

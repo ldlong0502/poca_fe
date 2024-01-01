@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +22,7 @@ import 'package:poca/utils/custom_toast.dart';
 class PlayerCubit extends Cubit<int> {
   PlayerCubit(this.context) : super(0);
   final BuildContext context;
-
+  bool isOnline = true;
   bool isMiniPlayer = true;
   bool isHideBottomNavigator = false;
   double speed = 1;
@@ -35,6 +37,47 @@ class PlayerCubit extends Cubit<int> {
   DurationState durationState = const DurationState(
       progress: Duration.zero, buffered: Duration.zero, total: Duration.zero);
   PersistentTabController persistentTabController = PersistentTabController();
+  int time =0 ;
+  Timer? timer;
+  List<String> listTime = ['5 minutes', '10 minutes', '15 minutes', '30 minutes' , '1 hour'];
+
+  setTime(int index) {
+    print('=>>>>>>>$index');
+    timer?.cancel();
+    if(index == -1) {
+      timer = null;
+      time = 0;
+      emitState();
+      return;
+    }
+    switch(index) {
+      case 0: time = 300;
+      case 1: time = 600;
+      case 2: time = 900;
+      case 3: time = 1800;
+      case 4: time = 3600;
+    }
+    emit(state+1);
+
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      time--;
+      emit(state+1);
+      if(time == 0) {
+        pause();
+        timer.cancel();
+      }
+    });
+  }
+
+  String formatDuration(int s) {
+    Duration duration = Duration(seconds: s);
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+
+    String minutes = twoDigits(duration.inMinutes.remainder(60));
+    String seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return '$minutes:$seconds';
+  }
   load() {}
 
   updateHideBottomNavigator(bool value) {
@@ -83,7 +126,8 @@ class PlayerCubit extends Cubit<int> {
     }
     return true;
   }
-  listen(Podcast podcast  , [int value = 0 , int historyDuration = 0]) async {
+  listen(Podcast podcast  , [int value = 0 , int historyDuration = 0 ,  bool checkOnline = true]) async {
+    isOnline =  checkOnline;
    if( !checkPermissionBeforeListen(podcast, value)) {
      return;
    }
@@ -97,8 +141,13 @@ class PlayerCubit extends Cubit<int> {
     emitState();
     currentPodcast = podcast;
     indexChapter = value;
-
-    final duration = await soundService.setUrl(podcast.episodesList[indexChapter].audioFile, Duration(milliseconds: historyDuration) );
+    Duration? duration;
+    if(isOnline) {
+      duration = await soundService.setUrl(podcast.episodesList[indexChapter].audioFile, Duration(milliseconds: historyDuration) );
+    }
+    else {
+      duration = await soundService.setFile(podcast.episodesList[indexChapter].audioFile, Duration(milliseconds: historyDuration) );
+    }
     durationState = durationState.copyWith(total: duration);
     isLoading = false;
     emitState();
@@ -134,6 +183,7 @@ class PlayerCubit extends Cubit<int> {
     soundService.pause();
   }
   dismissMiniPlayer() async {
+    setTime(-1);
     updateHistory();
     init();
     await soundService.stop();
@@ -141,7 +191,9 @@ class PlayerCubit extends Cubit<int> {
     emitState();
   }
   updateHistory() async {
+
     if(currentPodcast != null) {
+      if(currentPodcast!.id == 'download') return;
       await HistoryService.instance.updateNewHistory(currentPodcast!, indexChapter, durationState.progress.inMilliseconds);
       var context = AppConfigs.contextApp!;
       if(context.mounted) {

@@ -6,6 +6,7 @@ import 'package:poca/models/history_podcast.dart';
 import 'package:poca/models/podcast.dart';
 import 'package:poca/providers/local/history_podcast_provider.dart';
 import 'package:poca/providers/preference_provider.dart';
+import 'package:poca/utils/helper_utils.dart';
 
 class HistoryService {
   HistoryService._privateConstructor();
@@ -17,13 +18,8 @@ class HistoryService {
   updateNewHistory(Podcast podcast, int indexChapter, int duration) async {
     var listHistory =
         await HistoryPodcastProvider.instance.getListHistoryPodcast();
-    for(var item in listHistory) {
-      print('=>>>>>' + item.podcast.id);
-    }
     final index =
         listHistory.map((e) => e.podcast.id).toList().indexOf(podcast.id);
-    print('=>>>>>index' + podcast.id);
-    print('=>>>>>index' + index.toString());
     if (index != -1) {
       listHistory.removeAt(index);
     }
@@ -34,7 +30,9 @@ class HistoryService {
         dateUpdated: DateTime.now().millisecondsSinceEpoch);
     listHistory.insert(0, history);
     final json = jsonEncode(listHistory);
-    await PreferenceProvider.instance.setString(AppConfigs.KEY_RECENTLY_PLAYED, json);
+    var user = (await HelperUtils.checkLogin());
+    var idUser = user == null ? 'local' : user.id;
+    await PreferenceProvider.instance.setString( idUser + AppConfigs.KEY_RECENTLY_PLAYED, json);
 
     debugPrint('=>>>>>>>>>>>>> ${listHistory.length}');
     
@@ -49,6 +47,8 @@ class HistoryService {
       listHistory.removeAt(index);
     }
     final json = jsonEncode(listHistory);
-    await PreferenceProvider.instance.setString(AppConfigs.KEY_RECENTLY_PLAYED, json);
+    var user = (await HelperUtils.checkLogin());
+    var idUser = user == null ? 'local' : user.id;
+    await PreferenceProvider.instance.setString(idUser + AppConfigs.KEY_RECENTLY_PLAYED, json);
   }
 }

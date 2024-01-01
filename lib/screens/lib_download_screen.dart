@@ -1,40 +1,37 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:poca/features/blocs/player_cubit.dart';
-import 'package:poca/features/blocs/subscribe_cubit.dart';
-import 'package:poca/features/dialogs/recently_bottom_sheet.dart';
-import 'package:poca/features/dialogs/subcsribe_bottom_sheet.dart';
-import 'package:poca/features/podcast/podcast_detail_view.dart';
-import 'package:poca/utils/dialogs.dart';
+import 'package:poca/features/account/library/episode_download_bottom_sheet.dart';
+import 'package:poca/models/download_episode.dart';
+import 'package:poca/models/episode.dart';
+import 'package:poca/services/download_services.dart';
+import 'package:poca/services/history_services.dart';
+import 'package:poca/widgets/loading_progress.dart';
 
 import '../configs/constants.dart';
-import '../features/blocs/recently_play_cubit.dart';
-import '../routes/app_routes.dart';
-import '../utils/navigator_custom.dart';
+import '../features/blocs/player_cubit.dart';
+import '../models/podcast.dart';
+import '../providers/preference_provider.dart';
+import '../utils/dialogs.dart';
 import '../utils/resizable.dart';
-import '../widgets/app_bar_custom.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/network_image_custom.dart';
 
-class RecentlySeeAll extends StatelessWidget {
-  const RecentlySeeAll(
-      {super.key, required this.cubit, required this.title});
+class LibDownloadScreen extends StatelessWidget {
+  const LibDownloadScreen(
+      {super.key});
+  
 
-  final RecentlyPlayCubit cubit;
-  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: title.isEmpty ? null :AppBarCustom('', context),
-      body: BlocProvider.value(
-        value: cubit,
-        child: BlocBuilder<RecentlyPlayCubit, int>(
+      body: BlocProvider(
+        create: (context) => EpisodeDownloadCubit()..load(),
+        child: BlocBuilder<EpisodeDownloadCubit, int>(
           builder: (context, state) {
+            if(state == 0) return const LoadingProgress();
+            final cubit = context.read<EpisodeDownloadCubit>();
             return Column(
               children: [
                 Padding(
@@ -43,7 +40,7 @@ class RecentlySeeAll extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Builder(builder: (context) {
-                        var text = title;
+                        var text = '';
                         return Text(
                           text,
                           style: TextStyle(
@@ -70,7 +67,7 @@ class RecentlySeeAll extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (cubit.listHistory.isEmpty)
+                if (cubit.listDownLoad.isEmpty)
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -79,7 +76,8 @@ class RecentlySeeAll extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Your subscription is empty!\nExplore and return again',
+                            'Your downloaded is empty!\nExplore and return again',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: Resizable.font(context, 20),
                                 color: primaryColor,
@@ -91,7 +89,7 @@ class RecentlySeeAll extends StatelessWidget {
                           SizedBox(
                             height: 50,
                             child: CustomButton(
-                                title: 'Explore Podcast',
+                                title: 'Explore',
                                 fontSize: 17,
                                 onTap: () {
                                   final playCubit = context.read<PlayerCubit>();
@@ -104,10 +102,10 @@ class RecentlySeeAll extends StatelessWidget {
                       ),
                     ),
                   ),
-                if (cubit.listHistory.isNotEmpty && cubit.isGrid)
+                if (cubit.listDownLoad.isNotEmpty && cubit.isGrid)
                   Expanded(
                       child: GridView.builder(
-                          itemCount: cubit.listHistory.length,
+                          itemCount: cubit.listDownLoad.length,
                           padding: EdgeInsets.symmetric(
                               vertical: Resizable.padding(context, 15),
                               horizontal: Resizable.padding(context, 20)),
@@ -119,17 +117,17 @@ class RecentlySeeAll extends StatelessWidget {
                             mainAxisSpacing: Resizable.padding(context, 15),
                           ),
                           itemBuilder: (context, index) {
-                            var playlist = cubit.listHistory[index];
+                            var playlist = cubit.listDownLoad[index];
                             return GestureDetector(
                               onTap: () {
-                                NavigatorCustom.pushNewScreen(context, PodcastDetailView(podcast: playlist.podcast), AppRoutes.podcastDetail);
+                                cubit.play(playlist, context);
                               },
                               child: Column(
                                 children: [
                                   Expanded(
                                       child: LayoutBuilder(builder: (context, c) {
                                         return NetworkImageCustom(
-                                          url: playlist.podcast.imageUrl,
+                                          url: playlist.item.imageUrl,
                                           width: c.maxWidth,
                                           height: c.maxHeight,
                                           borderRadius: BorderRadius.circular(20),
@@ -139,7 +137,7 @@ class RecentlySeeAll extends StatelessWidget {
                                     height: 10,
                                   ),
                                   Text(
-                                    playlist.podcast.title,
+                                    playlist.item.title,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -150,31 +148,11 @@ class RecentlySeeAll extends StatelessWidget {
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  Text(
-                                    playlist.podcast.episodesList[playlist.indexChapter].title,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: secondaryColor,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Resizable.font(context, 15)),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  LinearPercentIndicator(
-                                    padding: EdgeInsets.zero,
-                                    lineHeight: 6.0,
-                                    percent: playlist.duration / (playlist.podcast.episodesList[playlist.indexChapter].duration * 1000),
-                                    barRadius: const Radius.circular(1000),
-                                    backgroundColor: Colors.grey.shade400,
-                                    progressColor: Colors.blue,
-                                  ),
                                 ],
                               ),
                             );
                           })),
-                if (cubit.listHistory.isNotEmpty && !cubit.isGrid)
+                if (cubit.listDownLoad.isNotEmpty && !cubit.isGrid)
                   Expanded(
                       child: ListView(
                         shrinkWrap: true,
@@ -182,17 +160,17 @@ class RecentlySeeAll extends StatelessWidget {
                             horizontal: Resizable.padding(context, 20)
                         ),
                         children: [
-                          ...cubit.listHistory.map((e) {
+                          ...cubit.listDownLoad.map((e) {
                             return GestureDetector(
                               onTap: () {
-                                NavigatorCustom.pushNewScreen(context, PodcastDetailView(podcast: e.podcast), AppRoutes.podcastDetail);
+                                cubit.play(e, context);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: Row(
                                   children: [
                                     NetworkImageCustom(
-                                      url: e.podcast.imageUrl,
+                                      url: e.item.imageUrl,
                                       width: Resizable.size(context, 100),
                                       height: Resizable.size(context, 100),
                                       borderRadius: BorderRadius.circular(20),
@@ -205,7 +183,7 @@ class RecentlySeeAll extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            e.podcast.title,
+                                            e.item.title,
                                             maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -213,29 +191,13 @@ class RecentlySeeAll extends StatelessWidget {
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: Resizable.font(context, 20)),
                                           ),
-                                          Text(
-                                            e.podcast.episodesList[e.indexChapter].title,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: secondaryColor,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: Resizable.font(context, 15)),
-                                          ),
                                           const SizedBox(height: 5,),
-                                          LinearPercentIndicator(
-                                            padding: EdgeInsets.zero,
-                                            lineHeight: 6.0,
-                                            percent: e.duration / (e.podcast.episodesList[e.indexChapter].duration * 1000),
-                                            barRadius: const Radius.circular(1000),
-                                            backgroundColor: Colors.grey.shade400,
-                                            progressColor: Colors.blue,
-                                          ),
                                         ],
                                       ),
                                     ),
                                     IconButton(onPressed: () {
-                                      Dialogs.showBottomSheet(context, RecentlyBottomSheet(podcast: e.podcast , episode: e.podcast.episodesList[e.indexChapter],));
+
+                                      Dialogs.showBottomSheet(context, EpisodeDownloadBottomSheet(cubit: cubit, episodeDownLoad: e));
                                     }, icon: const Icon(Icons.more_vert_rounded) , color: primaryColor , splashRadius: 20,)
                                   ],
                                 ),
@@ -250,5 +212,48 @@ class RecentlySeeAll extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class EpisodeDownloadCubit extends Cubit<int> {
+  EpisodeDownloadCubit() : super(0);
+  List<EpisodeDownLoad> listDownLoad = [];
+
+  final local = PreferenceProvider.instance;
+
+  bool isGrid = false;
+  updateView() {
+    isGrid = !isGrid;
+    emit(state+1);
+  }
+
+  load() async {
+    listDownLoad = await DownloadService.instance.getListEpisodeDownLoad();
+
+    emit(state + 1);
+  }
+
+
+  removeHistory(EpisodeDownLoad episode) async {
+    await DownloadService.instance.removeItem(episode);
+    load();
+  }
+
+
+  play(EpisodeDownLoad item , BuildContext context) async {
+    var podcast = Podcast(
+        id: 'download',
+        title: 'Episode_Downloaded',
+        description: '',
+        topicsList: [],
+        host: '',
+        episodesList: listDownLoad.map((e) => e.item.copyWith(audioFile: e.path)).toList(),
+        publishDate: DateTime.now().millisecondsSinceEpoch,
+        subscribesList: [],
+        favoritesList: [],
+        imageUrl: 'assets/images/local_podcast.jpg');
+    var index  = listDownLoad.indexOf(item);
+    context.read<PlayerCubit>().listen( podcast, index , 0 , false);
+
   }
 }

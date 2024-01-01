@@ -22,10 +22,8 @@ class SubscribeList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserModel?>(
       builder: (context, user) {
-
-        if(user != null) {
-          context.read<SubscribeCubit>().load(user);
-        }
+        if(user == null) return Container();
+        context.read<SubscribeCubit>().load(user);
         return BlocBuilder<SubscribeCubit, int>(
           builder: (context, list) {
             if(list == 0) return Container();

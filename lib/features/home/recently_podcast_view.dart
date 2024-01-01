@@ -119,7 +119,7 @@ class RecentlyPodcastView extends StatelessWidget {
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            fontSize: Resizable.font(context, 14),
+                                            fontSize: Resizable.font(context, 12),
                                             color: primaryColor,
                                             fontWeight: FontWeight.w700
                                         ),),

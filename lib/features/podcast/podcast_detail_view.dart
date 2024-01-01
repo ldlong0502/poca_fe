@@ -18,6 +18,7 @@ import 'package:poca/widgets/loading_progress.dart';
 import 'package:poca/widgets/network_image_custom.dart';
 
 import '../../utils/convert_utils.dart';
+import '../../widgets/download_alert.dart';
 import 'app_bar_podcast.dart';
 
 class PodcastDetailView extends StatelessWidget {
@@ -52,7 +53,8 @@ class PodcastDetailView extends StatelessWidget {
                           podcastCubit.podcast!.description,
                           expandText: 'see more',
                           textAlign: TextAlign.start,
-                          linkStyle: const TextStyle(fontWeight: FontWeight.bold),
+                          linkStyle:
+                              const TextStyle(fontWeight: FontWeight.bold),
                           collapseText: 'show less',
                           style: TextStyle(
                               fontSize: Resizable.font(context, 16),
@@ -72,103 +74,119 @@ class PodcastDetailView extends StatelessWidget {
                         children: [
                           ...podcastCubit.podcast!.episodesList
                               .map((e) => InkWell(
-                            onTap: () {
-                              context.read<PlayerCubit>().listen(
-                                  podcastCubit.podcast!,
-                                  podcastCubit.podcast!.episodesList
-                                      .indexOf(e));
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: Row(
-                                children: [
-                                  NetworkImageCustom(
-                                    url: e.imageUrl,
-                                    height: Resizable.size(context, 85),
-                                    width: Resizable.size(context, 85),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    onTap: () {
+                                      context.read<PlayerCubit>().listen(
+                                          podcastCubit.podcast!,
+                                          podcastCubit.podcast!.episodesList
+                                              .indexOf(e));
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.only(bottom: 10),
+                                      child: Row(
                                         children: [
-                                          Text(
-                                            e.title,
-                                            style: TextStyle(
-                                                fontSize:
-                                                Resizable.font(context, 16),
-                                                color: textColor,
-                                                fontWeight: FontWeight.bold),
+                                          NetworkImageCustom(
+                                            url: e.imageUrl,
+                                            height: Resizable.size(context, 85),
+                                            width: Resizable.size(context, 85),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
                                           ),
                                           const SizedBox(
-                                            height: 5,
+                                            width: 10,
                                           ),
-                                          Row(
+                                          Expanded(
+                                              child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                '${ConvertUtils.convertIntToDateString(e.publishDate * 1000)} - ${ConvertUtils.convertIntToDuration(e.duration)}',
-                                                overflow: TextOverflow.ellipsis,
+                                                e.title,
                                                 style: TextStyle(
                                                     fontSize: Resizable.font(
-                                                        context, 13),
-                                                    color: primaryColor,
+                                                        context, 16),
+                                                    color: textColor,
                                                     fontWeight:
-                                                    FontWeight.w600),
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
                                               ),
                                               Row(
-                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    e.favoritesList.length
-                                                        .toString(),
+                                                    '${ConvertUtils.convertIntToDateString(e.publishDate * 1000)} - ${ConvertUtils.convertIntToDuration(e.duration)}',
                                                     overflow:
-                                                    TextOverflow.ellipsis,
+                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                         fontSize:
-                                                        Resizable.font(
-                                                            context, 13),
+                                                            Resizable.font(
+                                                                context, 13),
                                                         color: primaryColor,
                                                         fontWeight:
-                                                        FontWeight.w600),
+                                                            FontWeight.w600),
                                                   ),
-                                                  const Icon(
-                                                    Icons.favorite,
-                                                    color: primaryColor,
-                                                  )
+                                                  Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        e.favoritesList.length
+                                                            .toString(),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                Resizable.font(
+                                                                    context,
+                                                                    13),
+                                                            color: primaryColor,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                      const Icon(
+                                                        Icons.favorite,
+                                                        color: primaryColor,
+                                                      )
+                                                    ],
+                                                  ),
+                                                  InkWell(
+                                                      onTap: () async {
+                                                        await showDialog(
+                                                            context: context,
+                                                            builder: (context) =>
+                                                                DownloadAlert(
+                                                                  episode: e,
+                                                                ));
+                                                      },
+                                                      child: const Icon(
+                                                        Icons
+                                                            .download_for_offline,
+                                                        color: primaryColor,
+                                                      ))
                                                 ],
                                               ),
-                                              InkWell(
-                                                  onTap: () {},
-                                                  child: const Icon(
-                                                    Icons.more_horiz_rounded,
-                                                    color: primaryColor,
-                                                  ))
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
                                             ],
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
+                                          ))
                                         ],
-                                      ))
-                                ],
-                              ),
-                            ),
-                          ))
+                                      ),
+                                    ),
+                                  ))
                               .toList()
                         ],
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                       Divider(
+                      Divider(
                         thickness: 1,
                         height: 2,
                         endIndent: 20,
@@ -177,10 +195,14 @@ class PodcastDetailView extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10
+                            horizontal: 20, vertical: 10),
+                        child: Text(
+                          'People think?',
+                          style: TextStyle(
+                              color: textColor,
+                              fontSize: Resizable.font(context, 20),
+                              fontWeight: FontWeight.bold),
                         ),
-                        child: Text('People think?', style: TextStyle(color: textColor,fontSize: Resizable.font(context, 20) , fontWeight: FontWeight.bold),),
                       ),
                       ListComment(podcast: podcast),
                       Divider(
@@ -190,11 +212,12 @@ class PodcastDetailView extends StatelessWidget {
                         indent: 20,
                         color: Colors.grey.shade600,
                       ),
-                      RecommendPodcast(podcast: podcast,),
+                      RecommendPodcast(
+                        podcast: podcast,
+                      ),
                       const SizedBox(
                         height: 100,
                       ),
-
                     ],
                   ),
                 )
