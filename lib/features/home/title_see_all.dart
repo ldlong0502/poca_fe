@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poca/utils/helper_utils.dart';
 
 import '../../configs/constants.dart';
 import '../../utils/resizable.dart';
@@ -22,7 +23,7 @@ class TitleSeeAll extends StatelessWidget {
               fontWeight: FontWeight.w600
           ),),
           InkWell(
-            onTap: onSeeAll,
+          onTap: onSeeAll,
             child: Text('See All', style: TextStyle(
                 fontSize: Resizable.font(context, 18),
                 color: textColor,

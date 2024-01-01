@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:poca/features/blocs/login_cubit.dart';
+import 'package:poca/features/dialogs/login_dialog.dart';
 import 'package:poca/providers/api/api_auth.dart';
 import 'package:poca/utils/convert_utils.dart';
 import 'package:poca/utils/custom_toast.dart';
@@ -27,25 +28,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passWordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController dobController = TextEditingController(text: ConvertUtils.convertDob(DateTime.now()));
-  final  _formKey = GlobalKey<FormState>();
-  @override
-  void dispose() {
-    EasyLoading.dismiss();
-    super.dispose();
-  }
+  final TextEditingController dobController = TextEditingController(
+      text: ConvertUtils.convertDob(DateTime(
+          DateTime.now().year - 18, DateTime.now().month, DateTime.now().day)));
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    EasyLoading.instance
-      ..loadingStyle = EasyLoadingStyle.custom
-      ..indicatorColor = Colors.white
-      ..textColor = Colors.white
-      ..backgroundColor = primaryColor;
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: primaryColor),
         automaticallyImplyLeading: false,
-        title: const Text('Sign up' , style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
+        title: const Text('Sign up',
+            style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
         elevation: 0,
       ),
       body: Center(
@@ -53,27 +48,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: BlocProvider(
             create: (context) => SignUpCubit(),
             child: BlocConsumer<SignUpCubit, SignUpStatus>(
-              listener: (context, state) {
+              listener: (context, state) async {
                 if (state == SignUpStatus.loading) {
-                  EasyLoading.show(status: 'Loading...');
+                  await showDialog<void>(
+                    context: context,
+                    builder: (BuildContext dialogContext) {
+                      return const LoadingDialog();
+                    },
+                  );
                 }
                 if (state == SignUpStatus.failed) {
-                  EasyLoading.dismiss();
-                  CustomToast.showBottomToast(
-                      context, 'Email or Username is existed');
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    await showDialog<void>(
+                      context: context,
+                      builder: (BuildContext dialogContext) {
+                        return const ErrorDialog(
+                            title: 'Error', content: 'Email or username exist');
+                      },
+                    );
+                  }
                 }
                 if (state == SignUpStatus.success) {
-                  EasyLoading.dismiss();
-                  CustomToast.showBottomToast(context, 'Sign up successfully');
-                  Navigator.of(context, rootNavigator: true)
-                      .popAndPushNamed(AppRoutes.login);
+                  if(context.mounted) {
+                    CustomToast.showBottomToast(context, 'Sign up successfully');
+                    Navigator.of(context, rootNavigator: true)
+                        .popAndPushNamed(AppRoutes.login);
+                  }
                 }
               },
               builder: (context, state) {
                 final cubit = context.read<SignUpCubit>();
                 return Column(
                   children: [
-
                     Image.asset('assets/icons/ic_logo.png',
                         height: Resizable.size(context, 100)),
                     const SizedBox(
@@ -88,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 title: 'Email Address',
                                 onValidate: (String value) {
                                   debugPrint('validate: $value');
-                                  if(value.isEmpty) {
+                                  if (value.isEmpty) {
                                     return 'Email is empty';
                                   }
                                   return null;
@@ -102,7 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 title: 'FullName',
                                 onValidate: (String value) {
                                   debugPrint('validate: $value');
-                                  if(value.isEmpty) {
+                                  if (value.isEmpty) {
                                     return 'FulName is empty';
                                   }
                                   return null;
@@ -116,7 +123,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 title: 'Username',
                                 onValidate: (String value) {
                                   debugPrint('validate: $value');
-                                  if(value.isEmpty) {
+                                  if (value.isEmpty) {
                                     return 'Username is empty';
                                   }
                                   return null;
@@ -126,15 +133,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               height: 20,
                             ),
                             DateFormFieldCustom(
-                                controller: dobController,
-                                title: 'Date of Birth',
-                                onValidate: (String value) {
-                                  if(value.isEmpty) {
-                                    return 'Dob is empty';
-                                  }
-                                  return null;
-                                },
-                                ),
+                              controller: dobController,
+                              title: 'Date of Birth',
+                              onValidate: (String value) {
+                                if (value.isEmpty) {
+                                  return 'Dob is empty';
+                                }
+
+                                return null;
+                              },
+                            ),
                             const SizedBox(
                               height: 20,
                             ),
@@ -142,7 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 controller: passWordController,
                                 title: 'Password',
                                 onValidate: (String value) {
-                                  if(value.isEmpty) {
+                                  if (value.isEmpty) {
                                     return 'Password is empty';
                                   }
                                   return null;
@@ -150,7 +158,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 isPassword: true),
                           ],
                         )),
-
                     const SizedBox(
                       height: 20,
                     ),
@@ -164,12 +171,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           _formKey.currentState!.save();
                           cubit.update(SignUpStatus.loading);
                           var res = await ApiAuthentication.instance.signUp(
-                                emailController.text,
-                            fullNameController.text,
-                            userNameController.text,
-                            dobController.text,
-                            passWordController.text
-                          );
+                              emailController.text,
+                              fullNameController.text,
+                              userNameController.text,
+                              dobController.text,
+                              passWordController.text);
                           if (res) {
                             cubit.update(SignUpStatus.success);
                           } else {
@@ -194,7 +200,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context, rootNavigator: true).popAndPushNamed(AppRoutes.login);
+                            Navigator.of(context, rootNavigator: true)
+                                .popAndPushNamed(AppRoutes.login);
                           },
                           child: Text(
                             'Sign In',

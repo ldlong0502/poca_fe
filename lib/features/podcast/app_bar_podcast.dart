@@ -8,6 +8,7 @@ import 'package:poca/features/podcast/row_info_podcast.dart';
 import 'package:poca/widgets/custom_button.dart';
 
 import '../../models/user_model.dart';
+import '../../routes/app_routes.dart';
 import '../../utils/resizable.dart';
 import '../blocs/player_cubit.dart';
 import '../blocs/user_cubit.dart';
@@ -53,17 +54,22 @@ class AppBarPodcast extends StatelessWidget {
                         children: [
                           BlocBuilder<UserCubit, UserModel?>(
                             builder: (context, state) {
-                              if (state == null) return Container();
                               var isSub= podcastCubit.podcast!.subscribesList
                                   .map((e) => e.id)
-                                  .contains(state.id);
+                                  .contains(state?.id);
                               return IconButton(
                                   onPressed: () async {
-                                    await podcastCubit.updateSubscribes(context ,state);
-
-                                    if(context.mounted) {
-                                      context.read<SubscribeCubit>().load(state);
+                                    if(state == null) {
+                                      Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.login);
                                     }
+                                    else {
+                                      await podcastCubit.updateSubscribes(context ,state);
+
+                                      if(context.mounted) {
+                                        context.read<SubscribeCubit>().load(state);
+                                      }
+                                    }
+
                                   },
                                   icon:  Icon(
                                     isSub ? Icons.bookmark : Icons.bookmark_add_outlined,
@@ -73,12 +79,15 @@ class AppBarPodcast extends StatelessWidget {
                           ),
                           BlocBuilder<UserCubit, UserModel?>(
                             builder: (context, state) {
-                              if (state == null) return Container();
                               var isFav = podcastCubit.podcast!.favoritesList
                                   .map((e) => e.id)
-                                  .contains(state.id);
+                                  .contains(state?.id);
                               return IconButton(
                                   onPressed: () {
+                                    if(state == null) {
+                                      Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.login);
+                                      return;
+                                    }
                                     podcastCubit.updateFav(context ,state);
                                   },
                                   icon: Icon(

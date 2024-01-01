@@ -9,6 +9,8 @@ import 'package:poca/widgets/custom_text_field.dart';
 import '../configs/constants.dart';
 import '../features/dialogs/login_dialog.dart';
 import '../routes/app_routes.dart';
+import '../services/nfc_services.dart';
+import '../utils/dialogs.dart';
 import '../utils/resizable.dart';
 import '../widgets/custom_button.dart';
 
@@ -57,9 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
                  }
                 }
                 if (state == LoginStatus.success) {
-                  CustomToast.showBottomToast(context, 'Welcome to Poca');
-                  Navigator.of(context, rootNavigator: true)
-                      .pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false);
+                 if(context.mounted) {
+                   CustomToast.showBottomToast(context, 'Welcome to Poca');
+                   Navigator.of(context, rootNavigator: true)
+                       .pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false);
+                 }
                 }
               },
               builder: (context, state) {
@@ -175,7 +179,44 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    SizedBox(
+                      width: Resizable.width(context) * 0.8,
+                      child: const Row(
+                        children: [
+                          Expanded(child: Divider(
+                            thickness: 1.5,
+                          )),
+                          Padding(
+                            padding:  EdgeInsets.symmetric(horizontal: 20),
+                            child: Text('or'),
+                          ),
+                          Expanded(child: Divider( thickness: 1.5,))
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20,),
+                    TextButton(
+                        onPressed: () async {
+                          Dialogs.showNFCAction(context , 'Read');
+                          NFCServices.instance.readFromNFC(context , cubit);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Colors.grey.shade300)
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset('assets/icons/ic_nfc.png', height: 25,),
+                            const SizedBox(width: 20,),
+                            const Text(
+                              'Log in with NFC',
+                              style: TextStyle(
+                                  color: secondaryColor,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        )),
                   ],
                 );
               },

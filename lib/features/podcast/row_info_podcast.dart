@@ -69,7 +69,7 @@ class RowInfoPodcast extends StatelessWidget {
                                   fontWeight: FontWeight.w600),
                             ),
                           ),
-                          Icon(Icons.navigate_next)
+                          const Icon(Icons.navigate_next)
                         ],
                       ),
                     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:poca/models/user_model.dart';
 import 'package:poca/providers/api/api_provider.dart';
 import 'package:poca/providers/preference_provider.dart';
@@ -36,12 +37,13 @@ class ApiAuthentication {
   Future<bool> signUp(String email, String fullName , String username, String dob, String password) async {
 
     debugPrint(dob);
+    var date  = DateFormat('dd-MM-yyyy').parse(dob);
     var response = await ApiProvider().post('/auth/register', data:  {
       "username": username,
       "email": email,
       "password": password,
       "fullName": fullName,
-      "dateOfBirth": dob
+      "dateOfBirth": DateFormat('yyyy-MM-dd').format(date)
     });
     debugPrint(response.toString());
     if(response == null) return false;

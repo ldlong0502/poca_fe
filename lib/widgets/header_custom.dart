@@ -4,9 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/configs/constants.dart';
+import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/features/blocs/user_cubit.dart';
 import 'package:poca/models/user_model.dart';
 import 'package:poca/utils/resizable.dart';
+
+import '../features/account/edit_account.dart';
+import '../utils/dialogs.dart';
 
 class HeaderCustom extends StatelessWidget {
   const HeaderCustom({super.key, required this.title});
@@ -53,17 +57,22 @@ class HeaderCustom extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(width: 5,),
-                  Container(
-                    height: Resizable.size(context, 40),
-                    width: Resizable.size(context, 40),
+                  InkWell(
+                    onTap: () {
+                      Dialogs.showBottomSheet(context, const EditAccount());
+                    },
+                    child: Container(
+                      height: Resizable.size(context, 40),
+                      width: Resizable.size(context, 40),
 
-                    decoration: BoxDecoration(
-                        color: secondaryColor,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(user!.imageUrl),
-                        fit: BoxFit.cover
-                      )
+                      decoration: BoxDecoration(
+                          color: secondaryColor,
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(user!.imageUrl),
+                          fit: BoxFit.cover
+                        )
+                      ),
                     ),
                   ),
                 ],

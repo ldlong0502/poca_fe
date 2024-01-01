@@ -12,6 +12,7 @@ import 'package:poca/features/blocs/recently_play_cubit.dart';
 import 'package:poca/features/blocs/subscribe_cubit.dart';
 import 'package:poca/routes/app_routes.dart';
 import 'package:poca/services/dynamic_links_service.dart';
+import 'package:poca/services/nfc_services.dart';
 
 import 'features/blocs/user_cubit.dart';
 import 'firebase_options.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => PlayerCubit(context)),
         BlocProvider(create: (context) => UserCubit()),
         BlocProvider(create: (context) => SubscribeCubit()),
+        BlocProvider(create: (context) => LoadingCubit()),
         BlocProvider(create: (context) => RecentlyPlayCubit()),
       ],
       child: MaterialApp(

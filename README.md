@@ -1,16 +1,30 @@
-# poca
+# Ứng Dụng Podcast Flutter
 
-A new Flutter project.
+## Nhóm
+Tên nhóm: Nhóm 3 - SE405
+19520137 - Trần Linh Khuê Lam
+20521565 - Lữ Đình Long
+20521459 - Phạm Phùng Gia Khiêm
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Tên Đề Tài
+Ứng dụng Podcast Flutter
 
-A few resources to get you started if this is your first Flutter project:
+## Giới Thiệu
+Ứng dụng Podcast Flutter là một ứng dụng di động được phát triển bằng Flutter, giúp người dùng có thể dễ dàng tìm kiếm, nghe và quản lý các podcast yêu thích của mình.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Chức Năng
+- Tìm kiếm và nghe podcast từ nhiều nguồn khác nhau.
+- Đăng ký theo dõi các chủ đề và chương trình podcast.
+- Tính năng tải về để nghe offline.
+- Giao diện người dùng thân thiện và dễ sử dụng.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Link Github
+[Link Github của Dự Án](https://github.com/ldlong0502/poca_fe)
+
+## Hướng Dẫn Cài Đặt 
+1. **Yêu Cầu Hệ Thống:**
+    - Đảm bảo bạn đã cài đặt Flutter và Dart trên máy tính của mình.
+    - Install: Flutter pub get 
+    - Start: Flutter run
+

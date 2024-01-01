@@ -87,7 +87,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Builder(
                     builder: (context) {
-                      var text = cubit.isSearching ? 'Search for "${textController.text}"' : "Recent searches";
+                      var text = cubit.isSearching ? 'Search for "${textController.text}"' : "Recently search";
                       return Text(text, style: TextStyle(
                           fontSize: Resizable.font(context, 24),
                           color: textColor,
@@ -107,7 +107,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       ...cubit.listPodcast.map((e) {
                         return ItemSearch(isHistory: !cubit.isSearching, podcast: e);
                       }).toList(),
-                      const SizedBox(height: 200,)
+                      const SizedBox(height: 20,),
+                      if(cubit.listPodcast.length >= 2 && !cubit.isSearching)
+                        TextButton(
+                            onPressed: () async {
+                                cubit.removeAll();
+                            },
+                            child: const Text(
+                              'Clear All',
+                              style: TextStyle(
+                                  color: primaryColor, fontWeight: FontWeight.w700),
+                            )),
                     ],
                   ),
                 )

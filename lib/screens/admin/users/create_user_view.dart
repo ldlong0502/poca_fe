@@ -376,7 +376,7 @@ class CreateUserCubit extends Cubit<int> {
   var passWordController = TextEditingController();
   var emailController = TextEditingController();
   var fullNameController = TextEditingController();
-  var dobController = TextEditingController(text: ConvertUtils.convertDob(DateTime.now()));
+  var dobController = TextEditingController(text: ConvertUtils.convertDob(DateTime(DateTime.now().year - 18, DateTime.now().month, DateTime.now().day)));
   XFile? image;
   FilePickerResult? result;
   bool isCreating = false;

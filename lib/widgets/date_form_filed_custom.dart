@@ -35,11 +35,12 @@ class DateFormFieldCustom extends StatefulWidget {
 
 class _DateFormFieldCustomState extends State<DateFormFieldCustom> {
   Future<void> _selectDate(BuildContext context) async {
+    var date = DateTime.now();
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: DateTime(date.year - 18, date.month, date.day),
         firstDate: DateTime(1900, 1),
-        lastDate: DateTime.now());
+        lastDate:  DateTime(date.year - 18, date.month, date.day));
     if (picked != null) {
       setState(() {
        widget.controller.text = ConvertUtils.convertDob(picked);

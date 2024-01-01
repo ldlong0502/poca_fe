@@ -6,6 +6,7 @@ import 'package:poca/features/blocs/user_cubit.dart';
 import 'package:poca/features/dialogs/normal_dialog.dart';
 import 'package:poca/models/user_model.dart';
 import 'package:poca/providers/api/api_channel.dart';
+import 'package:poca/providers/preference_provider.dart';
 import 'package:poca/routes/app_routes.dart';
 import 'package:poca/screens/base_screen.dart';
 import 'package:poca/screens/change_pass_screen.dart';
@@ -14,12 +15,14 @@ import 'package:poca/screens/library_screen.dart';
 import 'package:poca/screens/playlist_screen.dart';
 import 'package:poca/features/channel/your_channel_screen.dart';
 import 'package:poca/utils/dialogs.dart';
+import 'package:poca/utils/helper_utils.dart';
 import 'package:poca/utils/navigator_custom.dart';
 import 'package:poca/utils/resizable.dart';
 import 'package:poca/widgets/custom_button.dart';
 
 import '../configs/constants.dart';
 import '../providers/api/api_auth.dart';
+import '../services/nfc_services.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key, required this.isLogin});
@@ -34,6 +37,19 @@ class AccountScreen extends StatelessWidget {
         'showIcon': false,
         'onClick': () {
           Dialogs.showBottomSheet(context, const EditAccount());
+        },
+      },
+      {
+        'title': 'Save info to NFC',
+        'showIcon': false,
+        'onClick': () async {
+          var username = await PreferenceProvider.instance.getString('username');
+          var password = await PreferenceProvider.instance.getString('password');
+          var key = HelperUtils().encrypt('$username:$password');
+         if(context.mounted){
+           Dialogs.showNFCAction(context , 'Write');
+           NFCServices.instance.writeToNFC( 0, key, context);
+         }
         },
       },
       {
@@ -131,7 +147,7 @@ class AccountScreen extends StatelessWidget {
                         return GestureDetector(
                           onTap: e['onClick'] as Function(),
                           child: SizedBox(
-                            height: Resizable.size(context, 45),
+                            height: Resizable.size(context, 50),
                             child: Row(
                               children: [
                                 Expanded(

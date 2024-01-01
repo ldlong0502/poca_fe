@@ -17,6 +17,7 @@ import 'package:poca/widgets/custom_button.dart';
 import 'package:poca/widgets/loading_progress.dart';
 import 'package:poca/widgets/network_image_custom.dart';
 
+import '../../routes/app_routes.dart';
 import '../../utils/convert_utils.dart';
 import '../../widgets/download_alert.dart';
 import 'app_bar_podcast.dart';
@@ -157,6 +158,11 @@ class PodcastDetailView extends StatelessWidget {
                                                   ),
                                                   InkWell(
                                                       onTap: () async {
+                                                        if(context.read<UserCubit>().state == null) {
+                                                          Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.login);
+                                                          return;
+                                                        }
+
                                                         await showDialog(
                                                             context: context,
                                                             builder: (context) =>
