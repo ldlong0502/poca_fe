@@ -6,6 +6,7 @@ import 'package:poca/models/user_model.dart';
 import 'package:poca/providers/api/api_provider.dart';
 import 'package:poca/providers/preference_provider.dart';
 import 'package:poca/providers/user/user_provider.dart';
+import 'package:poca/utils/helper_utils.dart';
 
 import '../../models/podcast.dart';
 
@@ -60,6 +61,24 @@ class ApiUser {
       return podcasts;
     } else {
       return [];
+    }
+  }
+
+  Future<bool> updateFCMToken(String fcmToken) async {
+    print(fcmToken);
+    var user = await HelperUtils.checkLogin();
+    if(user == null) return false;
+    var response = await ApiProvider().update('/users/${user.id}', data: {
+      'fcmToken': fcmToken
+    });
+
+    print(999999999999999999);
+    if (response == null) return false;
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

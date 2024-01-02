@@ -78,6 +78,8 @@ dependencies:
   path_provider: ^2.1.1
   flutter_nfc_kit: ^3.3.3
   ndef: ^0.3.1
+  firebase_messaging: ^14.6.2
+  flutter_local_notifications: ^14.1.1
 
 dev_dependencies:
   flutter_test:

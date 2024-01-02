@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/features/blocs/player_cubit.dart';
 import 'package:poca/features/blocs/user_cubit.dart';
 import 'package:poca/models/user_model.dart';
+import 'package:poca/providers/api/api_user.dart';
 import 'package:poca/providers/preference_provider.dart';
 import 'package:poca/providers/user/user_provider.dart';
 import 'package:poca/routes/app_routes.dart';
 import 'package:poca/utils/resizable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -58,6 +60,8 @@ class SplashScreen extends StatelessWidget {
                 arguments: {'isLogin': true});
           }
          else {
+           String fcmToken = await PreferenceProvider.instance.getString('fcmToken');
+           await ApiUser.instance.updateFCMToken(fcmToken);
             Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
                 AppRoutes.main, (route) => false,
                 arguments: {'isLogin': true});
