@@ -9,6 +9,7 @@ class ChannelCubit extends Cubit<ChannelModel?> {
   }
   final String idChannel;
   load() async {
+    if(isClosed) return;
     emit(await ApiChannel.instance.getChannelById(idChannel));
   }
 

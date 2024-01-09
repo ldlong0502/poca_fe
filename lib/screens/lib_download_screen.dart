@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:poca/design_patterns/strategy/context_play_strategy.dart';
+import 'package:poca/design_patterns/strategy/offline_play_strategy.dart';
 import 'package:poca/features/account/library/episode_download_bottom_sheet.dart';
 import 'package:poca/models/download_episode.dart';
 import 'package:poca/models/episode.dart';
@@ -253,7 +255,10 @@ class EpisodeDownloadCubit extends Cubit<int> {
         favoritesList: [],
         imageUrl: 'assets/images/local_podcast.jpg');
     var index  = listDownLoad.indexOf(item);
-    context.read<PlayerCubit>().listen( podcast, index , 0 , false);
+
+    ContextPlayStrategy podcastApp = ContextPlayStrategy();
+    podcastApp.setPlayStrategy(OfflinePlayStrategy(context));
+    podcastApp.playStrategy.playPodcast(podcast, index);
 
   }
 }

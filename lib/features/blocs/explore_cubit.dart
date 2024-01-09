@@ -10,6 +10,8 @@ import 'package:poca/providers/api/api_topic.dart';
 import 'package:poca/providers/preference_provider.dart';
 import 'package:poca/utils/helper_utils.dart';
 
+import '../../design_patterns/decorator/decorator.dart';
+
 class ExploreCubit extends Cubit<int> {
   ExploreCubit() : super(0) {
     load();
@@ -91,7 +93,10 @@ class ExploreCubit extends Cubit<int> {
     }
     else {
       isSearching = true;
-      listPodcast =  await ApiPodcast.instance.searchPodcast(searchText);
+      PodcastList basicPodcastList = BasicPodcastList();
+      PodcastList searchableAndSortableList = SortablePodcastListDecorator(
+          SearchablePodcastListDecorator(basicPodcastList, searchText));
+      listPodcast =  await searchableAndSortableList.getPodcasts();
     }
     emit(state+1);
   }

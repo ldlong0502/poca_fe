@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:poca/design_patterns/factory_method/alert_dialogs/client_alert_dialog.dart';
 import 'package:poca/features/blocs/login_cubit.dart';
 import 'package:poca/providers/api/api_auth.dart';
 import 'package:poca/utils/custom_toast.dart';
@@ -60,9 +61,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
                 if (state == LoginStatus.success) {
                  if(context.mounted) {
-                   CustomToast.showBottomToast(context, 'Welcome to Poca');
-                   Navigator.of(context, rootNavigator: true)
-                       .pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false);
+                   Navigator.pop(context);
+                   var dialog = ClientAlertDialog('Login', 'Login Successfully!\nWelcome to Poca');
+                   await dialog.getDialog.show(context);
+                    if(context.mounted) {
+                      Navigator.of(context, rootNavigator: true)
+                          .pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false);
+                    }
                  }
                 }
               },

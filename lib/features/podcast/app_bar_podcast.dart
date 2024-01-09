@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poca/configs/constants.dart';
+import 'package:poca/design_patterns/strategy/online_play_strategy.dart';
 import 'package:poca/features/blocs/podcast_cubit.dart';
 import 'package:poca/features/blocs/subscribe_cubit.dart';
 import 'package:poca/features/home/subscribe_list.dart';
@@ -8,6 +9,7 @@ import 'package:poca/features/podcast/row_info_podcast.dart';
 import 'package:poca/widgets/custom_button.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../design_patterns/strategy/context_play_strategy.dart';
 import '../../models/user_model.dart';
 import '../../routes/app_routes.dart';
 import '../../services/dynamic_links_service.dart';
@@ -129,9 +131,13 @@ class AppBarPodcast extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 20),
           child: GestureDetector(
             onTap: () {
-              context
-                  .read<PlayerCubit>()
-                  .listen(podcastCubit.podcast!);
+
+              ContextPlayStrategy podcastApp = ContextPlayStrategy();
+              podcastApp.setPlayStrategy(OnlinePlayStrategy(context));
+              podcastApp.playStrategy.playPodcast(podcastCubit.podcast!, 0);
+              // context
+              //     .read<PlayerCubit>()
+              //     .listen(podcastCubit.podcast!);
               podcastCubit.updateListens(context, 0);
             },
             child: AnimatedContainer(
